@@ -1,47 +1,135 @@
 // ================================
-// MAIN.JS - App Entry Point
+// MAIN.JS - App Entry Point & Router
 // ================================
 
-// Import constants to test
 import * as Constants from './config/constants.js';
+import { renderCharactersPage } from './pages/charactersPage.js';
+import { renderCharacterDetail } from './pages/characterDetail.js';
+import { renderDiscsPage } from './pages/discsPage.js';
 
-// Initialize app
-function init() {
-  console.log('🚀 ZZZ Drive Optimizer Initializing...');
+// ================================
+// ROUTER
+// ================================
+
+const routes = {
+  '/': renderCharactersPage,
+  '/discs': renderDiscsPage,
+  '/character/:id': renderCharacterDetail
+};
+
+// Parse hash and extract route + params
+function parseHash() {
+  const hash = window.location.hash.slice(1) || '/'; // Remove # and default to /
   
-  // Test: Log all disc sets
-  console.log('📀 Disc Sets:', Constants.DISC_SETS);
-  console.log('📊 Total 4-piece sets:', Constants.get4PieceSets().length);
-  console.log('📊 Total 2-piece sets:', Constants.get2PieceSets().length);
+  // Check for exact match first
+  if (routes[hash]) {
+    return { handler: routes[hash], params: {} };
+  }
   
-  // Test: Check slot 4 main stats
-  console.log('🎯 Slot 4 main stats:', Constants.MAIN_STATS_BY_SLOT[4]);
+  // Check for parameterized routes (e.g., /character/:id)
+  for (const [pattern, handler] of Object.entries(routes)) {
+    if (pattern.includes(':')) {
+      const regex = new RegExp('^' + pattern.replace(/:[^/]+/g, '([^/]+)') + '$');
+      const match = hash.match(regex);
+      
+      if (match) {
+        // Extract parameter names and values
+        const paramNames = pattern.match(/:[^/]+/g).map(p => p.slice(1));
+        const params = {};
+        paramNames.forEach((name, index) => {
+          params[name] = match[index + 1];
+        });
+        
+        return { handler, params };
+      }
+    }
+  }
   
-  // Test: Validation rules
-  console.log('✅ Validation rules:', Constants.VALIDATION_RULES);
-  
-  // Replace loading text with success message
+  // 404 - Route not found
+  return { handler: render404, params: {} };
+}
+
+// Render the current route
+function renderRoute() {
+  const { handler, params } = parseHash();
   const app = document.getElementById('app');
-  app.innerHTML = `
+  
+  // Update active nav link
+  updateActiveNavLink();
+  
+  // Render page
+  try {
+    app.innerHTML = ''; // Clear current content
+    handler(app, params); // Call route handler
+  } catch (error) {
+    console.error('Error rendering route:', error);
+    app.innerHTML = `
+      <div style="text-align: center; padding: 3rem; color: var(--color-error);">
+        <h2>⚠️ Error Loading Page</h2>
+        <p>${error.message}</p>
+      </div>
+    `;
+  }
+}
+
+// Update active class on nav links
+function updateActiveNavLink() {
+  const hash = window.location.hash.slice(1) || '/';
+  const links = document.querySelectorAll('.nav-link');
+  
+  links.forEach(link => {
+    const href = link.getAttribute('href').slice(1); // Remove #
+    
+    if (href === hash || (href === '/' && hash === '/')) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
+}
+
+// 404 Page
+function render404(container) {
+  container.innerHTML = `
     <div style="text-align: center; padding: 3rem;">
-      <h2 style="color: var(--color-accent-cyan); margin-bottom: 1rem;">
-        ✅ Phase 1.2 Complete!
+      <h2 style="color: var(--color-error); margin-bottom: 1rem;">
+        404 - Page Not Found
       </h2>
       <p style="color: var(--color-text-secondary); margin-bottom: 2rem;">
-        Game data constants loaded successfully. Check console for details.
+        The page you're looking for doesn't exist.
       </p>
-      <div style="background: var(--color-bg-secondary); padding: 2rem; border-radius: var(--radius-lg); max-width: 600px; margin: 0 auto;">
-        <h3 style="color: var(--color-accent-purple); margin-bottom: 1rem;">Loaded Data:</h3>
-        <ul style="text-align: left; color: var(--color-text-primary);">
-          <li>✅ ${Constants.get4PieceSets().length} Four-piece disc sets</li>
-          <li>✅ ${Constants.get2PieceSets().length} Two-piece disc sets</li>
-          <li>✅ ${Constants.SUB_STATS.length} Sub-stats defined</li>
-          <li>✅ Scoring algorithm weights configured</li>
-          <li>✅ Validation rules established</li>
-        </ul>
-      </div>
+      <a href="#/" style="color: var(--color-accent-cyan); text-decoration: none; font-weight: 600;">
+        ← Back to Characters
+      </a>
     </div>
   `;
+}
+
+// ================================
+// NAVIGATION HELPER
+// ================================
+
+// Export for use in other modules
+export function navigate(path) {
+  window.location.hash = path;
+}
+
+// ================================
+// INITIALIZATION
+// ================================
+
+function init() {
+  console.log('🚀 ZZZ Drive Optimizer Starting...');
+  console.log('📀 Loaded', Constants.get4PieceSets().length, '4-piece sets');
+  console.log('📀 Loaded', Constants.get2PieceSets().length, '2-piece sets');
+  
+  // Initial route render
+  renderRoute();
+  
+  // Listen for hash changes (back/forward buttons, manual navigation)
+  window.addEventListener('hashchange', renderRoute);
+  
+  console.log('✅ Router initialized');
 }
 
 // Run when DOM is ready
