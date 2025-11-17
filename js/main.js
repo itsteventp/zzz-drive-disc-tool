@@ -3,9 +3,11 @@
 // ================================
 
 import * as Constants from './config/constants.js';
+import { initStorage, getStorageStats } from './storage/storage.js';
 import { renderCharactersPage } from './pages/charactersPage.js';
 import { renderCharacterDetail } from './pages/characterDetail.js';
 import { renderDiscsPage } from './pages/discsPage.js';
+import { renderTestPage } from './pages/testPage.js';
 
 // ================================
 // ROUTER
@@ -14,7 +16,8 @@ import { renderDiscsPage } from './pages/discsPage.js';
 const routes = {
   '/': renderCharactersPage,
   '/discs': renderDiscsPage,
-  '/character/:id': renderCharacterDetail
+  '/character/:id': renderCharacterDetail,
+  '/test': renderTestPage
 };
 
 // Parse hash and extract route + params
@@ -120,6 +123,12 @@ export function navigate(path) {
 
 function init() {
   console.log('🚀 ZZZ Drive Optimizer Starting...');
+  
+  // Initialize storage
+  initStorage();
+  const stats = getStorageStats();
+  console.log('📊 Storage stats:', stats);
+  
   console.log('📀 Loaded', Constants.get4PieceSets().length, '4-piece sets');
   console.log('📀 Loaded', Constants.get2PieceSets().length, '2-piece sets');
   
