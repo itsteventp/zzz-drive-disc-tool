@@ -1,0 +1,60 @@
+/* ================================
+   CHARACTER DETAIL PAGE
+   ================================ */
+
+.disc-slot {
+  transition: all var(--transition-normal);
+}
+
+.disc-slot.empty:hover {
+  border-color: var(--color-accent-cyan);
+  background: var(--color-bg-secondary);
+  transform: translateY(-2px);
+}
+
+.disc-slot.equipped:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.disc-selection-item {
+  transition: all var(--transition-fast);
+}
+
+.disc-selection-item:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ================================
+   RESPONSIVE: CHARACTER DETAIL
+   ================================ */
+
+@media (max-width: 1280px) {
+  /* Stack layout on tablets */
+  .character-detail-layout {
+    grid-template-columns: 280px 1fr 280px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  /* Full stack on mobile */
+  .character-detail-layout {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .character-info-panel,
+  .build-analysis-panel {
+    position: static !important;
+  }
+}
+
+@media (max-width: 768px) {
+  #disc-slots-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .disc-slot {
+    min-height: 200px;
+  }
+}
