@@ -14,6 +14,53 @@
     <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
 </head>
 <body>
+    <!-- Animated Background -->
+    <div id="bg-effects" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    ">
+        <!-- Gradient Orbs -->
+        <div class="bg-orb" style="
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.15) 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+            animation: float 20s ease-in-out infinite;
+        "></div>
+        
+        <div class="bg-orb" style="
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(157, 78, 221, 0.15) 0%, transparent 70%);
+            bottom: -100px;
+            right: -100px;
+            animation: float 15s ease-in-out infinite reverse;
+        "></div>
+        
+        <div class="bg-orb" style="
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 0, 110, 0.1) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: float 25s ease-in-out infinite;
+        "></div>
+    </div>
+    
     <!-- Navigation -->
     <nav id="main-nav">
         <div class="nav-container">

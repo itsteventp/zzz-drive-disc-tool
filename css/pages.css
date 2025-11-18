@@ -2,152 +2,330 @@
    CHARACTER DETAIL PAGE
    ================================ */
 
+.character-detail-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr 300px;
+    gap: var(--space-xl);
+    align-items: start;
+}
+
+.character-info-panel,
+.build-analysis-panel {
+    position: sticky;
+    top: calc(80px + var(--space-lg));
+}
+
+/* Disc Slots */
 .disc-slot {
-  transition: all var(--transition-normal);
+    transition: all var(--transition-normal);
+    position: relative;
+}
+
+.disc-slot::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, 
+        rgba(0, 217, 255, 0.1) 0%, 
+        rgba(157, 78, 221, 0.1) 100%);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.disc-slot:hover::before {
+    opacity: 1;
+}
+
+.disc-slot.empty {
+    border-style: dashed;
+    cursor: pointer;
 }
 
 .disc-slot.empty:hover {
-  border-color: var(--color-accent-cyan);
-  background: var(--color-bg-secondary);
-  transform: translateY(-2px);
+    border-color: var(--color-accent-cyan);
+    background: rgba(0, 217, 255, 0.05);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md), var(--glow-cyan);
+}
+
+.disc-slot.equipped {
+    background: linear-gradient(135deg, 
+        var(--color-bg-tertiary) 0%, 
+        var(--color-bg-elevated) 100%);
 }
 
 .disc-slot.equipped:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-xl);
 }
 
 .disc-selection-item {
-  transition: all var(--transition-fast);
+    transition: all var(--transition-fast);
+    cursor: pointer;
 }
 
 .disc-selection-item:hover {
-  transform: translateX(4px);
-  box-shadow: var(--shadow-md);
+    transform: translateX(8px);
+    box-shadow: var(--shadow-lg);
+    border-left-width: 6px;
+}
+
+/* Build Grade Display */
+.build-grade-display {
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 0 20px currentColor;
+    }
+    50% {
+        box-shadow: 0 0 40px currentColor;
+    }
 }
 
 /* ================================
-   RESPONSIVE: CHARACTER DETAIL
+   CHARACTER LIST PAGE
    ================================ */
 
-@media (max-width: 1280px) {
-  /* Stack layout on tablets */
-  .character-detail-layout {
-    grid-template-columns: 280px 1fr 280px !important;
-  }
+.character-card {
+    animation: fadeInUp 0.4s ease;
+    animation-fill-mode: both;
 }
 
-@media (max-width: 1024px) {
-  /* Full stack on mobile */
-  .character-detail-layout {
-    grid-template-columns: 1fr !important;
-  }
-  
-  .character-info-panel,
-  .build-analysis-panel {
-    position: static !important;
-  }
-}
-
-@media (max-width: 768px) {
-  #disc-slots-grid {
-    grid-template-columns: 1fr !important;
-  }
-  
-  .disc-slot {
-    min-height: 200px;
-  }
-}
+.character-card:nth-child(1) { animation-delay: 0.05s; }
+.character-card:nth-child(2) { animation-delay: 0.1s; }
+.character-card:nth-child(3) { animation-delay: 0.15s; }
+.character-card:nth-child(4) { animation-delay: 0.2s; }
+.character-card:nth-child(5) { animation-delay: 0.25s; }
+.character-card:nth-child(6) { animation-delay: 0.3s; }
 
 /* ================================
    DISC INVENTORY PAGE
    ================================ */
 
 .disc-card {
-  transition: all var(--transition-normal);
+    transition: all var(--transition-normal);
+    animation: fadeInUp 0.3s ease;
+    animation-fill-mode: both;
 }
+
+.disc-card:nth-child(1) { animation-delay: 0.03s; }
+.disc-card:nth-child(2) { animation-delay: 0.06s; }
+.disc-card:nth-child(3) { animation-delay: 0.09s; }
+.disc-card:nth-child(4) { animation-delay: 0.12s; }
+.disc-card:nth-child(5) { animation-delay: 0.15s; }
+.disc-card:nth-child(6) { animation-delay: 0.18s; }
 
 .disc-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: var(--shadow-xl);
 }
 
-/* Comparison Panel Sticky Behavior */
+/* Comparison Panel */
 #comparison-panel {
-  animation: slideDown 0.3s ease;
+    animation: slideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: linear-gradient(135deg, 
+        var(--color-bg-secondary) 0%, 
+        var(--color-bg-tertiary) 100%);
+    border: 2px solid var(--color-accent-purple);
+    box-shadow: var(--shadow-xl), var(--glow-purple);
 }
 
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* Range Slider Styling */
-input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  cursor: pointer;
+.comparison-disc-card {
+    position: relative;
+    animation: scaleIn 0.3s ease;
 }
 
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  background: var(--color-accent-cyan);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-input[type="range"]::-webkit-slider-thumb:hover {
-  background: var(--color-accent-purple);
-  transform: scale(1.2);
-}
-
-input[type="range"]::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background: var(--color-accent-cyan);
-  border-radius: 50%;
-  cursor: pointer;
-  border: none;
-  transition: all var(--transition-fast);
-}
-
-input[type="range"]::-moz-range-thumb:hover {
-  background: var(--color-accent-purple);
-  transform: scale(1.2);
-}
-
-/* Disabled Button State */
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* ================================
-   RESPONSIVE: DISC INVENTORY
+   MULTI-STEP FORM
    ================================ */
 
+.form-step-content {
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Progress Bar */
+.progress-step {
+    transition: all var(--transition-normal);
+}
+
+.progress-step.active {
+    background: var(--color-accent-cyan);
+    box-shadow: var(--glow-cyan);
+}
+
+/* Slot Selection Buttons */
+.slot-select-btn,
+.mainstat-select-btn {
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+.slot-select-btn::before,
+.mainstat-select-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(0, 217, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.slot-select-btn:hover::before,
+.mainstat-select-btn:hover::before {
+    width: 200px;
+    height: 200px;
+}
+
+.slot-select-btn:hover,
+.mainstat-select-btn:hover {
+    border-color: var(--color-accent-cyan);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md), var(--glow-cyan);
+}
+
+/* Roll Slider */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background: linear-gradient(90deg, 
+        var(--color-bg-elevated) 0%, 
+        var(--color-accent-cyan) 100%);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, 
+        var(--color-accent-cyan) 0%, 
+        var(--color-accent-cyan-bright) 100%);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-md), var(--glow-cyan);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    background: linear-gradient(135deg, 
+        var(--color-accent-purple) 0%, 
+        var(--color-accent-purple-bright) 100%);
+    transform: scale(1.3);
+    box-shadow: var(--shadow-lg), var(--glow-purple);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, 
+        var(--color-accent-cyan) 0%, 
+        var(--color-accent-cyan-bright) 100%);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-md), var(--glow-cyan);
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+    background: linear-gradient(135deg, 
+        var(--color-accent-purple) 0%, 
+        var(--color-accent-purple-bright) 100%);
+    transform: scale(1.3);
+    box-shadow: var(--shadow-lg), var(--glow-purple);
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+   ================================ */
+
+@media (max-width: 1280px) {
+    .character-detail-layout {
+        grid-template-columns: 280px 1fr 280px;
+    }
+}
+
 @media (max-width: 1024px) {
-  #comparison-panel {
-    position: static !important;
-  }
+    .character-detail-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .character-info-panel,
+    .build-analysis-panel {
+        position: static;
+    }
+    
+    #comparison-panel {
+        position: static !important;
+    }
 }
 
 @media (max-width: 768px) {
-  .disc-card {
-    min-height: auto;
-  }
-  
-  #comparison-panel > div:last-child {
-    grid-template-columns: 1fr !important;
-  }
+    #disc-slots-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .disc-slot {
+        min-height: 200px;
+    }
+    
+    .disc-card {
+        min-height: auto;
+    }
+    
+    #comparison-panel > div:last-child {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .slot-select-btn,
+    .mainstat-select-btn {
+        padding: var(--space-md) !important;
+        font-size: var(--text-sm) !important;
+    }
 }
