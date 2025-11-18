@@ -3,7 +3,6 @@
 // ================================
 
 import { getAllCharacters, deleteCharacter, getStorageStats } from '../storage/storage.js';
-import { loadTestData } from '../utils/testData.js';
 import { showToast, confirmDialog, createEmptyState } from '../utils/ui.js';
 import { getEquippedDiscCount, getPreferredSetsDisplay } from '../models/character.js';
 import { navigate } from '../main.js';
@@ -242,9 +241,6 @@ export function renderCharactersPage(container, params) {
       <button id="add-character-btn" class="btn-primary">
         + Add Character
       </button>
-      <button id="load-test-data-btn" class="btn-secondary btn-small">
-        🧪 Load Test Data
-      </button>
     </div>
   `;
   
@@ -291,16 +287,6 @@ export function renderCharactersPage(container, params) {
   const addBtn = document.getElementById('add-character-btn');
   if (addBtn) {
     addBtn.addEventListener('click', () => openCharacterForm());
-  }
-  
-  // Load test data button
-  const testBtn = document.getElementById('load-test-data-btn');
-  if (testBtn) {
-    testBtn.addEventListener('click', () => {
-      loadTestData();
-      showToast('Test data loaded successfully', 'success');
-      renderCharactersPage(container);
-    });
   }
   
   // Search input

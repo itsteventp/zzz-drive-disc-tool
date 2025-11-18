@@ -7,7 +7,6 @@ import { initStorage, getStorageStats } from './storage/storage.js';
 import { renderCharactersPage } from './pages/charactersPage.js';
 import { renderCharacterDetail } from './pages/characterDetail.js';
 import { renderDiscsPage } from './pages/discsPage.js';
-import { renderTestPage } from './pages/testPage.js';
 
 // ================================
 // ROUTER
@@ -16,8 +15,7 @@ import { renderTestPage } from './pages/testPage.js';
 const routes = {
   '/': renderCharactersPage,
   '/discs': renderDiscsPage,
-  '/character/:id': renderCharacterDetail,
-  '/test': renderTestPage
+  '/character/:id': renderCharacterDetail
 };
 
 // Parse hash and extract route + params
