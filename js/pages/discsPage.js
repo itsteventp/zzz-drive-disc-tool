@@ -267,6 +267,9 @@ function createDiscCard(disc) {
   
   const card = document.createElement('div');
   card.className = 'disc-card';
+  card.setAttribute('role', 'article');
+  card.setAttribute('aria-label', `${getDiscSetName(disc)} disc, Slot ${disc.slot}, Main stat: ${disc.mainStat}${isEquipped ? `, equipped by ${character.name}` : ''}`);
+  card.setAttribute('tabindex', '0');
   card.style.cssText = `
     background: var(--color-bg-secondary);
     border-radius: var(--radius-lg);
@@ -303,7 +306,7 @@ function createDiscCard(disc) {
               border-radius: var(--radius-sm);
               font-size: 0.75rem;
               font-weight: 600;
-            ">EQUIPPED</span>
+            " aria-label="This disc is equipped">EQUIPPED</span>
           ` : ''}
         </div>
         
@@ -331,7 +334,7 @@ function createDiscCard(disc) {
           border-radius: var(--radius-md);
           font-weight: 700;
           font-size: 1.2rem;
-        ">${grade.letter}</div>
+        " aria-label="Grade ${grade.letter}">${grade.letter}</div>
       ` : ''}
     </div>
     
@@ -364,7 +367,7 @@ function createDiscCard(disc) {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: var(--space-xs);
-      ">
+      " class="substat-grid">
         ${disc.subStats.map(([stat, rolls]) => `
           <div style="
             background: var(--color-bg-tertiary);
@@ -397,6 +400,8 @@ function createDiscCard(disc) {
       <button 
         class="btn-compare-disc ${isInComparison ? 'btn-primary' : 'btn-secondary'} btn-small"
         data-disc-id="${disc.id}"
+        aria-label="${isInComparison ? 'Remove from comparison' : 'Add to comparison'}"
+        aria-pressed="${isInComparison}"
         style="flex: 1;"
         ${comparisonDiscs.length >= MAX_COMPARISON_DISCS && !isInComparison ? 'disabled' : ''}
       >
@@ -406,11 +411,13 @@ function createDiscCard(disc) {
       <button 
         class="btn-edit-disc btn-secondary btn-small"
         data-disc-id="${disc.id}"
+        aria-label="Edit disc"
       >✏️</button>
       
       <button 
         class="btn-delete-disc btn-danger btn-small"
         data-disc-id="${disc.id}"
+        aria-label="Delete disc"
       >🗑️</button>
     </div>
   `;

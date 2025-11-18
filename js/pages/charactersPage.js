@@ -20,7 +20,10 @@ function renderCharacterCard(character) {
   const setsDisplay = getPreferredSetsDisplay(character);
   
   const card = document.createElement('div');
-  card.className = 'card';
+  card.className = 'card character-card';
+  card.setAttribute('role', 'article');
+  card.setAttribute('aria-label', `${character.name} - ${equippedCount} of 6 discs equipped`);
+  card.setAttribute('tabindex', '0');
   card.style.cssText = `
     cursor: pointer;
     border-left-color: ${equippedCount === 6 ? 'var(--color-success)' : 'var(--color-accent-cyan)'};
@@ -36,6 +39,7 @@ function renderCharacterCard(character) {
         <button 
           class="btn-edit-char" 
           data-id="${character.id}"
+          aria-label="Edit ${character.name}"
           style="
             background: var(--color-accent-purple);
             border: none;
@@ -51,6 +55,7 @@ function renderCharacterCard(character) {
         <button 
           class="btn-delete-char" 
           data-id="${character.id}"
+          aria-label="Delete ${character.name}"
           style="
             background: var(--color-error);
             border: none;
@@ -80,7 +85,7 @@ function renderCharacterCard(character) {
           color: ${equippedCount === 6 ? 'var(--color-success)' : 'var(--color-text-primary)'};
           font-weight: 700;
           font-size: 1.1rem;
-        ">${equippedCount}/6</span>
+        " aria-label="${equippedCount} of 6 equipped">${equippedCount}/6</span>
       </div>
       
       <div style="margin-top: var(--space-sm); color: var(--color-text-muted); font-size: 0.85rem;">
@@ -89,13 +94,23 @@ function renderCharacterCard(character) {
     </div>
   `;
   
-  // Click card to view details
-  card.addEventListener('click', (e) => {
+  // Click and keyboard navigation
+  const navigateToDetail = (e) => {
     // Don't navigate if clicking action buttons
     if (e.target.closest('.btn-edit-char') || e.target.closest('.btn-delete-char')) {
       return;
     }
     navigate(`/character/${character.id}`);
+  };
+  
+  card.addEventListener('click', navigateToDetail);
+  
+  // Keyboard support
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      navigateToDetail(e);
+    }
   });
   
   return card;

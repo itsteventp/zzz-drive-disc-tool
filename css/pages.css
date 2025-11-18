@@ -329,3 +329,158 @@ input[type="range"]::-moz-range-thumb:hover {
         font-size: var(--text-sm) !important;
     }
 }
+
+/* ================================
+   MOBILE RESPONSIVE LAYOUTS
+   ================================ */
+
+@media (max-width: 1024px) {
+    /* Character Detail - Stack Layout */
+    .character-detail-layout {
+        grid-template-columns: 1fr !important;
+        gap: var(--space-lg);
+    }
+    
+    .character-info-panel,
+    .build-analysis-panel {
+        position: static !important;
+    }
+    
+    /* Disc Slots - 2 Column */
+    #disc-slots-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    /* Comparison Panel */
+    #comparison-panel {
+        position: static !important;
+        margin-bottom: var(--space-lg);
+    }
+}
+
+@media (max-width: 768px) {
+    /* Character List - Single Column */
+    .character-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Disc Inventory - Single Column */
+    .disc-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Disc Slots - Single Column on Mobile */
+    #disc-slots-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .disc-slot {
+        min-height: 180px;
+    }
+    
+    /* Comparison Panel - Stack Cards */
+    #comparison-panel > div:last-child {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Filters - Stack Vertically */
+    .filters-panel > div {
+        grid-template-columns: 1fr !important;
+        gap: var(--space-md);
+    }
+    
+    /* Headers - Stack on Mobile */
+    header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: var(--space-md) !important;
+    }
+    
+    header > div:last-child {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    header button {
+        width: 100%;
+    }
+    
+    /* Character Info Panel - Better Mobile Layout */
+    .character-info-panel {
+        margin-bottom: var(--space-lg);
+    }
+    
+    /* Build Analysis - Better Mobile Layout */
+    .build-analysis-panel {
+        margin-top: var(--space-lg);
+    }
+    
+    /* Disc Selection Modal - Optimize for Mobile */
+    .disc-selection-item {
+        padding: var(--space-md) !important;
+    }
+    
+    .disc-selection-item:hover {
+        transform: none !important;
+    }
+    
+    /* Multi-Step Form - Mobile Friendly */
+    .slot-select-btn,
+    .mainstat-select-btn {
+        padding: var(--space-lg) var(--space-md) !important;
+        font-size: var(--text-sm) !important;
+    }
+    
+    .form-step-content {
+        animation: none; /* Disable animations on mobile for performance */
+    }
+}
+
+@media (max-width: 640px) {
+    /* Very Small Screens - Ultra Compact */
+    .disc-slot {
+        min-height: 160px;
+        padding: var(--space-md);
+    }
+    
+    /* Sub-stat Grid - Single Column */
+    .disc-slot .substat-grid,
+    .disc-card .substat-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Slot Selection - 2 Column Grid */
+    .slot-select-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    /* Main Stat Selection - Single Column */
+    .mainstat-select-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Roll Controls - Stack Vertically */
+    .roll-control {
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+    
+    .roll-control input[type="range"] {
+        width: 100%;
+    }
+}
+
+/* Landscape Mobile - Special Handling */
+@media (max-width: 896px) and (orientation: landscape) {
+    #app {
+        padding: var(--space-md);
+    }
+    
+    .modal {
+        max-height: 85vh;
+    }
+    
+    .modal-body {
+        max-height: 50vh;
+    }
+}

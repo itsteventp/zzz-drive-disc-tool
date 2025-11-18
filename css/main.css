@@ -32,13 +32,13 @@
     
     /* Text Colors */
     --color-text-primary: #ffffff;
-    --color-text-secondary: #b8b8d1;
-    --color-text-muted: #7b7b8f;
-    --color-text-disabled: #4a4a5c;
+    --color-text-secondary: #c5c5dc;
+    --color-text-muted: #8a8a9f;
+    --color-text-disabled: #5a5a6c;
     
     /* Semantic Colors */
-    --color-border: #2d2d44;
-    --color-border-light: #3a3a52;
+    --color-border: #3a3a54;
+    --color-border-light: #4a4a62;
     --color-success: #06ffa5;
     --color-success-dim: #05cc84;
     --color-warning: #ffb627;
@@ -327,27 +327,105 @@ body {
    RESPONSIVE DESIGN
    ================================ */
 
+/* Tablet and Below (1024px) */
+@media (max-width: 1024px) {
+    :root {
+        --space-xl: 1.5rem;
+        --space-2xl: 2rem;
+        --space-3xl: 3rem;
+    }
+    
+    .nav-container {
+        padding: var(--space-md) var(--space-lg);
+    }
+    
+    .nav-logo {
+        font-size: var(--text-xl);
+    }
+    
+    #app {
+        padding: var(--space-xl) var(--space-lg);
+    }
+}
+
+/* Mobile and Below (768px) */
 @media (max-width: 768px) {
+    :root {
+        --space-xl: 1.25rem;
+        --space-2xl: 1.75rem;
+        --text-2xl: 1.5rem;
+        --text-3xl: 1.75rem;
+        --text-4xl: 2rem;
+    }
+    
+    body {
+        font-size: 15px;
+    }
+    
+    /* Navigation - Stack on Mobile */
     .nav-container {
         flex-direction: column;
         gap: var(--space-md);
-        text-align: center;
+        padding: var(--space-md);
+    }
+    
+    .nav-logo {
+        font-size: var(--text-lg);
     }
     
     .nav-links {
-        flex-direction: column;
+        width: 100%;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
         gap: var(--space-sm);
+    }
+    
+    .nav-link {
+        padding: var(--space-sm) var(--space-md);
+        font-size: var(--text-sm);
+        flex: 1;
+        text-align: center;
+        min-width: 100px;
+    }
+    
+    /* Main Content */
+    #app {
+        padding: var(--space-lg) var(--space-md);
+    }
+    
+    /* Modals */
+    .modal {
+        max-width: 95% !important;
+        margin: var(--space-sm);
+    }
+    
+    /* Toast Container */
+    #toast-container {
+        left: var(--space-sm);
+        right: var(--space-sm);
+        top: var(--space-sm);
+    }
+    
+    .toast {
+        min-width: auto !important;
+        max-width: 100% !important;
+    }
+}
+
+/* Small Mobile (480px) */
+@media (max-width: 480px) {
+    .nav-links {
+        flex-direction: column;
         width: 100%;
     }
     
     .nav-link {
-        display: block;
-    }
-    
-    #app {
-        padding: var(--space-lg) var(--space-md);
+        width: 100%;
+        text-align: center;
     }
 }
+
 
 /* ================================
    BACKGROUND EFFECTS
@@ -376,4 +454,149 @@ body {
 #toast-container {
     position: relative;
     z-index: 1;
+}
+
+/* ================================
+   ACCESSIBILITY
+   ================================ */
+
+/* Focus Visible - Enhanced Keyboard Navigation */
+*:focus {
+    outline: none;
+}
+
+*:focus-visible {
+    outline: 3px solid var(--color-accent-cyan);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(0, 217, 255, 0.2);
+}
+
+/* Buttons Focus */
+button:focus-visible,
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-danger:focus-visible {
+    outline: 3px solid var(--color-accent-cyan);
+    outline-offset: 2px;
+    box-shadow: var(--shadow-lg), 0 0 0 4px rgba(0, 217, 255, 0.3);
+}
+
+/* Links Focus */
+a:focus-visible {
+    outline: 3px solid var(--color-accent-cyan);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+/* Form Elements Focus */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--color-accent-cyan);
+    outline-offset: 2px;
+}
+
+/* Card Focus (when tabbed to) */
+.card:focus-visible {
+    outline: 3px solid var(--color-accent-cyan);
+    outline-offset: 4px;
+    box-shadow: var(--shadow-xl), 0 0 0 4px rgba(0, 217, 255, 0.3);
+}
+
+/* Skip to Main Content Link */
+.skip-to-main {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-accent-cyan);
+    color: var(--color-bg-primary);
+    padding: var(--space-md) var(--space-xl);
+    border-radius: var(--radius-lg);
+    font-weight: 700;
+    text-decoration: none;
+    z-index: 9999;
+    transition: top var(--transition-fast);
+    box-shadow: var(--shadow-xl);
+}
+
+.skip-to-main:focus {
+    top: var(--space-md);
+}
+
+/* Screen Reader Only Content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    :root {
+        --color-bg-primary: #000000;
+        --color-bg-secondary: #0a0a0a;
+        --color-text-primary: #ffffff;
+        --color-border: #ffffff;
+    }
+    
+    .card,
+    .btn-primary,
+    .btn-secondary {
+        border: 2px solid currentColor;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .bg-orb {
+        animation: none !important;
+    }
+    
+    .card,
+    .btn-primary,
+    .btn-secondary,
+    .disc-slot {
+        transition: none !important;
+    }
+}
+
+/* Focus Within - For Container Elements */
+.form-group:focus-within {
+    outline: 2px solid var(--color-accent-cyan);
+    outline-offset: 4px;
+    border-radius: var(--radius-md);
+}
+
+/* Keyboard Navigation Helper */
+[tabindex="-1"]:focus {
+    outline: none;
+}
+
+/* Disabled Elements - Clear Visual Indication */
+:disabled,
+[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(50%);
+}
+
+/* Live Region Styling */
+[aria-live="polite"],
+[aria-live="assertive"] {
+    position: relative;
 }

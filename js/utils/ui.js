@@ -12,6 +12,9 @@ export function showToast(message, type = 'info', duration = 3000) {
   
   const toast = document.createElement('div');
   toast.className = 'toast';
+  toast.setAttribute('role', 'alert');
+  toast.setAttribute('aria-live', 'polite');
+  toast.setAttribute('aria-atomic', 'true');
   
   const colors = {
     success: 'var(--color-success)',
@@ -44,16 +47,26 @@ export function showToast(message, type = 'info', duration = 3000) {
   `;
   
   toast.innerHTML = `
-    <span style="font-size: 1.5rem;">${icons[type]}</span>
+    <span aria-hidden="true" style="font-size: 1.5rem;">${icons[type]}</span>
     <span style="flex: 1;">${message}</span>
-    <button onclick="this.parentElement.remove()" style="
-      background: none;
-      border: none;
-      color: var(--color-text-secondary);
-      cursor: pointer;
-      font-size: 1.2rem;
-      padding: 0;
-    ">×</button>
+    <button 
+      onclick="this.parentElement.remove()" 
+      aria-label="Close notification"
+      style="
+        background: none;
+        border: none;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-sm);
+      "
+    >×</button>
   `;
   
   container.appendChild(toast);
@@ -68,6 +81,7 @@ export function showToast(message, type = 'info', duration = 3000) {
   
   return toast;
 }
+
 
 // ================================
 // MODAL SYSTEM
@@ -86,6 +100,9 @@ export function createModal({ title, content, footer, onClose, maxWidth = '800px
   
   const backdrop = document.createElement('div');
   backdrop.className = 'modal-backdrop';
+  backdrop.setAttribute('role', 'dialog');
+  backdrop.setAttribute('aria-modal', 'true');
+  backdrop.setAttribute('aria-labelledby', 'modal-title');
   backdrop.style.cssText = `
     position: fixed;
     top: 0;
@@ -97,13 +114,14 @@ export function createModal({ title, content, footer, onClose, maxWidth = '800px
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: var(--z-modal-backdrop);
     padding: var(--space-lg);
     animation: fadeIn 0.2s ease;
   `;
   
   const modal = document.createElement('div');
   modal.className = 'modal';
+  modal.setAttribute('role', 'document');
   modal.style.cssText = `
     background: var(--color-bg-secondary);
     border-radius: var(--radius-lg);
@@ -126,27 +144,32 @@ export function createModal({ title, content, footer, onClose, maxWidth = '800px
     align-items: center;
   `;
   header.innerHTML = `
-    <h2 style="color: var(--color-accent-cyan); margin: 0;">${title}</h2>
-    <button id="modal-close-btn" style="
-      background: none;
-      border: none;
-      color: var(--color-text-secondary);
-      font-size: 2rem;
-      cursor: pointer;
-      padding: 0;
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: var(--radius-sm);
-      transition: all var(--transition-fast);
-    ">×</button>
+    <h2 id="modal-title" style="color: var(--color-accent-cyan); margin: 0;">${title}</h2>
+    <button 
+      id="modal-close-btn"
+      aria-label="Close modal"
+      style="
+        background: none;
+        border: none;
+        color: var(--color-text-secondary);
+        font-size: 2rem;
+        cursor: pointer;
+        padding: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-sm);
+        transition: all var(--transition-fast);
+      "
+    >×</button>
   `;
   
   // Modal body
   const body = document.createElement('div');
   body.className = 'modal-body';
+  body.setAttribute('tabindex', '0');
   body.style.cssText = `
     padding: var(--space-lg);
     overflow-y: auto;
@@ -185,6 +208,21 @@ export function createModal({ title, content, footer, onClose, maxWidth = '800px
   
   backdrop.appendChild(modal);
   modalRoot.appendChild(backdrop);
+  modalRoot.setAttribute('aria-hidden', 'false');
+  
+  // Trap focus within modal
+  const focusableElements = modal.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+  const firstFocusable = focusableElements[0];
+  const lastFocusable = focusableElements[focusableElements.length - 1];
+  
+  // Focus first element
+  setTimeout(() => {
+    if (firstFocusable) {
+      firstFocusable.focus();
+    }
+  }, 100);
   
   // Close handlers
   const closeHandler = () => {
@@ -207,7 +245,26 @@ export function createModal({ title, content, footer, onClose, maxWidth = '800px
       closeHandler();
     }
   };
+  
+  // Tab trap
+  const tabHandler = (e) => {
+    if (e.key === 'Tab') {
+      if (e.shiftKey) {
+        if (document.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable.focus();
+        }
+      } else {
+        if (document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable.focus();
+        }
+      }
+    }
+  };
+  
   document.addEventListener('keydown', escHandler);
+  modal.addEventListener('keydown', tabHandler);
   
   currentModal = {
     backdrop,
@@ -215,7 +272,8 @@ export function createModal({ title, content, footer, onClose, maxWidth = '800px
     body,
     footer: footerEl,
     close: closeHandler,
-    escHandler
+    escHandler,
+    tabHandler
   };
   
   return currentModal;
@@ -225,13 +283,20 @@ export function closeModal() {
   if (!currentModal) return;
   
   document.removeEventListener('keydown', currentModal.escHandler);
+  currentModal.modal.removeEventListener('keydown', currentModal.tabHandler);
   currentModal.backdrop.style.animation = 'fadeOut 0.2s ease';
+  
+  const modalRoot = document.getElementById('modal-root');
+  if (modalRoot) {
+    modalRoot.setAttribute('aria-hidden', 'true');
+  }
   
   setTimeout(() => {
     currentModal.backdrop.remove();
     currentModal = null;
   }, 200);
 }
+
 
 export function getModalBody() {
   return currentModal?.body;

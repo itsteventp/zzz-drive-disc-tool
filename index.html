@@ -14,6 +14,9 @@
     <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
 </head>
 <body>
+    <!-- Skip to Main Content (Accessibility) -->
+    <a href="#app" class="skip-to-main">Skip to main content</a>
+
     <!-- Animated Background -->
     <div id="bg-effects" style="
         position: fixed;
@@ -62,28 +65,28 @@
     </div>
     
     <!-- Navigation -->
-    <nav id="main-nav">
+    <nav id="main-nav" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
-            <h1 class="nav-logo">ZZZ Drive Optimizer</h1>
-            <ul class="nav-links">
-                <li><a href="#/" class="nav-link">Characters</a></li>
-                <li><a href="#/discs" class="nav-link">Disc Inventory</a></li>
-                <li><a href="#/test" class="nav-link" style="opacity: 0.6;">🧪 Test</a></li>
+            <h1 class="nav-logo" tabindex="0" role="banner">ZZZ Drive Optimizer</h1>
+            <ul class="nav-links" role="menubar">
+                <li role="none"><a href="#/" class="nav-link" role="menuitem">Characters</a></li>
+                <li role="none"><a href="#/discs" class="nav-link" role="menuitem">Disc Inventory</a></li>
+                <li role="none"><a href="#/test" class="nav-link" role="menuitem" style="opacity: 0.6;">🧪 Test</a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Main Content Area -->
-    <main id="app">
+    <main id="app" role="main" aria-live="polite">
         <!-- Content will be injected here by JavaScript router -->
-        <div class="loading">Loading...</div>
+        <div class="loading" role="status" aria-label="Loading application">Loading...</div>
     </main>
 
-    <!-- Modal Container (for forms and popups) -->
-    <div id="modal-root"></div>
+    <!-- Modal Container -->
+    <div id="modal-root" role="dialog" aria-modal="true" aria-hidden="true"></div>
 
     <!-- Toast Notification Container -->
-    <div id="toast-container"></div>
+    <div id="toast-container" role="region" aria-label="Notifications" aria-live="polite"></div>
 
     <!-- JavaScript Modules -->
     <script type="module" src="js/main.js"></script>

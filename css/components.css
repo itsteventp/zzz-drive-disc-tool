@@ -886,3 +886,154 @@ input[type="radio"] {
 .hover-scale:hover {
     transform: scale(1.05);
 }
+
+/* ================================
+   MOBILE OPTIMIZATIONS
+   ================================ */
+
+@media (max-width: 768px) {
+    /* Buttons - Larger Touch Targets */
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger {
+        min-height: 44px;
+        padding: var(--space-md) var(--space-lg);
+        font-size: var(--text-base);
+    }
+    
+    .btn-small {
+        min-height: 36px;
+        padding: var(--space-sm) var(--space-md);
+        font-size: var(--text-sm);
+    }
+    
+    .btn-icon {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    /* Forms - Better Touch Experience */
+    .form-input,
+    .form-select,
+    .form-textarea {
+        min-height: 44px;
+        padding: var(--space-md);
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .form-label {
+        font-size: var(--text-base);
+    }
+    
+    /* Checkboxes and Radio - Larger */
+    input[type="checkbox"],
+    input[type="radio"] {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        min-height: 24px;
+    }
+    
+    .checkbox-label,
+    .radio-label {
+        padding: var(--space-md);
+        gap: var(--space-md);
+    }
+    
+    /* Cards - Better Spacing */
+    .card {
+        padding: var(--space-lg);
+    }
+    
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+    }
+    
+    .card-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    
+    .card-actions > * {
+        flex: 1;
+        min-width: 100px;
+    }
+    
+    /* Badges */
+    .badge {
+        padding: var(--space-sm) var(--space-md);
+        font-size: var(--text-xs);
+    }
+    
+    /* Modal Adjustments */
+    .modal-body {
+        max-height: 60vh;
+    }
+    
+    /* Range Slider - Easier to Touch */
+    input[type="range"] {
+        height: 12px;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+        width: 28px;
+        height: 28px;
+    }
+    
+    input[type="range"]::-moz-range-thumb {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+/* Small Mobile Adjustments */
+@media (max-width: 480px) {
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .card-actions {
+        flex-direction: column;
+    }
+    
+    .card-actions > * {
+        width: 100%;
+    }
+    
+    .badge-grade {
+        font-size: var(--text-base);
+        padding: var(--space-xs) var(--space-md);
+    }
+}
+
+/* Hover States - Disable on Touch Devices */
+@media (hover: none) and (pointer: coarse) {
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .btn-danger:hover {
+        transform: none;
+    }
+    
+    .card:hover {
+        transform: none;
+        box-shadow: var(--shadow-md);
+    }
+    
+    .nav-link:hover {
+        transform: none;
+    }
+    
+    /* Keep active/focus states */
+    .btn-primary:active {
+        transform: scale(0.98);
+    }
+    
+    .btn-secondary:active {
+        transform: scale(0.98);
+    }
+}
