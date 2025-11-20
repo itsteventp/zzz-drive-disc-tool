@@ -343,11 +343,11 @@ export function renderCharactersPage(container, params) {
       </p>
     </div>
     
-    <div style="display: flex; gap: var(--space-md); align-items: center; flex-wrap: wrap;">
+    <div style="display: flex; gap: var(--space-md); align-items: center; flex-wrap: wrap; justify-content: flex-end;">
       <button id="export-data-btn" class="btn-secondary" title="Export all data">
         📥 Export
       </button>
-      <label for="import-file-input" class="btn-secondary" style="cursor: pointer; margin: 0;" title="Import data from file">
+      <label for="import-file-input" class="btn-secondary" style="cursor: pointer; margin: 0; display: inline-block;" title="Import data from file">
         📤 Import
       </label>
       <input type="file" id="import-file-input" accept=".json" style="display: none;">

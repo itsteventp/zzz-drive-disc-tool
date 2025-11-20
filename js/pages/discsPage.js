@@ -391,7 +391,7 @@ function createDiscCard(disc) {
             color: var(--color-text-primary);
             font-size: 0.9rem;
           ">
-            ${stat} <span style="color: var(--color-accent-cyan); font-weight: 700;">+${rollText}</span>
+            ${stat} <span style="color: var(--color-accent-cyan); font-weight: 700;">${rollText}</span>
           </div>
         `}).join('')}
       </div>

@@ -904,3 +904,62 @@ input[type="range"]::-moz-range-track {
         transform: none !important;
     }
 }
+
+/* ================================
+   BUTTON CONSISTENCY
+   ================================ */
+
+.btn-secondary,
+.btn-primary {
+  display: inline-block;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+  white-space: nowrap;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--color-accent-cyan);
+  color: white;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-cyan);
+  filter: brightness(1.2);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-accent-cyan);
+  background: rgba(0, 255, 255, 0.05);
+}
+
+/* Mobile responsive buttons */
+@media (max-width: 640px) {
+  header > div:last-child {
+    width: 100%;
+    justify-content: stretch !important;
+  }
+  
+  header > div:last-child > * {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+}

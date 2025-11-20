@@ -2,88 +2,24 @@
 // ZENLESS ZONE ZERO - GAME DATA CONSTANTS
 // ================================
 
-// Disc Sets (Drive Discs in ZZZ)
+// Disc Sets (Drive Discs in ZZZ — through v2.3)
 export const DISC_SETS = {
-  // 4-piece sets
-  WOODPECKER_ELECTRO: {
-    id: 'woodpecker_electro',
-    name: 'Woodpecker Electro',
-    slots: [1, 2, 3, 4, 5, 6],
-    bonuses: {
-      2: 'CRIT Rate +8%',
-      4: 'Upon hitting an enemy with a Basic Attack, Dash Attack, or Dodge Counter, DMG from Basic Attacks and Dash Attacks increases by 9% for 6s.'
-    }
-  },
-  FANGED_METAL: {
-    id: 'fanged_metal',
-    name: 'Fanged Metal',
-    slots: [1, 2, 3, 4, 5, 6],
-    bonuses: {
-      2: 'Physical DMG +10%',
-      4: 'Launching a Chain Attack or Ultimate increases Physical DMG by 35% for 12s.'
-    }
-  },
-  PUFFER_ELECTRO: {
-    id: 'puffer_electro',
-    name: 'Puffer Electro',
-    slots: [1, 2, 3, 4, 5, 6],
-    bonuses: {
-      2: 'PEN Ratio +8%',
-      4: 'When the equipper deals Electric DMG, their ATK increases by 10% for 8s. Repeated triggers reset duration. Max 3 stacks.'
-    }
-  },
-  SHOCKSTAR_DISCO: {
-    id: 'shockstar_disco',
-    name: 'Shockstar Disco',
-    slots: [1, 2, 3, 4, 5, 6],
-    bonuses: {
-      2: 'Impact +6%',
-      4: 'When launching a Chain Attack or Ultimate, DMG dealt increases by 15% for 12s.'
-    }
-  },
-  SWING_JAZZ: {
-    id: 'swing_jazz',
-    name: 'Swing Jazz',
-    slots: [1, 2, 3, 4, 5, 6],
-    bonuses: {
-      2: 'Energy Regen +20%',
-      4: 'Upon launching a Chain Attack or Ultimate, all squad members ATK increases by 15% for 12s.'
-    }
-  },
-  THUNDER_METAL: {
-    id: 'thunder_metal',
-    name: 'Thunder Metal',
-    slots: [1, 2, 3, 4, 5, 6],
-    bonuses: {
-      2: 'Electric DMG +10%',
-      4: 'When the equipper hits an enemy with a Basic Attack, Dash Attack, or Dodge Counter, DMG dealt by the next Chain Attack or Ultimate within 12s increases by 30%.'
-    }
-  },
-  HORMONE_PUNK: {
-    id: 'hormone_punk',
-    name: 'Hormone Punk',
+  ASTRAL_VOICE: {
+    id: 'astral_voice',
+    name: 'Astral Voice',
     slots: [1, 2, 3, 4, 5, 6],
     bonuses: {
       2: 'ATK +10%',
-      4: 'When off-field, Energy Regen increases by 0.6/s. Max 3 stacks, resets when taking the field.'
+      4: 'Whenever any squad member enters the field using a Quick Assist, all squad members gain 1 stack of Astral (max 3) for 15 s. Each stack increases the DMG of the entering character by 8%.'
     }
   },
-  INFERNO_METAL: {
-    id: 'inferno_metal',
-    name: 'Inferno Metal',
+  BRANCH_AND_BLADE_SONG: {
+    id: 'branch_blade_song',
+    name: 'Branch & Blade Song',
     slots: [1, 2, 3, 4, 5, 6],
     bonuses: {
-      2: 'Fire DMG +10%',
-      4: 'Upon launching an EX Special Attack, the target receives 20% more Fire DMG from the equipper for 8s.'
-    }
-  },
-  POLAR_METAL: {
-    id: 'polar_metal',
-    name: 'Polar Metal',
-    slots: [1, 2, 3, 4, 5, 6],
-    bonuses: {
-      2: 'Ice DMG +10%',
-      4: 'When launching a Dodge Counter or Quick Assist, the equipper\'s ATK increases by 30% for 12s.'
+      2: 'CRIT DMG +16%',
+      4: 'When Anomaly Mastery ≥ 115, CRIT DMG +30%. When any squad member applies Freeze or triggers Shatter, CRIT Rate +12% for 15 s.'
     }
   },
   CHAOS_JAZZ: {
@@ -92,7 +28,34 @@ export const DISC_SETS = {
     slots: [1, 2, 3, 4, 5, 6],
     bonuses: {
       2: 'Anomaly Proficiency +30',
-      4: 'When launching a Chain Attack or Ultimate, the equipper\'s Anomaly Proficiency increases by 60 for 12s.'
+      4: 'Fire DMG +15%, Electric DMG +15%. While off-field, EX/Assist Attack DMG +20%. When switching in, that buff lasts 5s (cooldown 7.5s).'
+    }
+  },
+  CHAOTIC_METAL: {
+    id: 'chaotic_metal',
+    name: 'Chaotic Metal',
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'Ether DMG +10%',
+      4: 'CRIT DMG +20%. When any team member triggers Corruption’s extra DMG, +5.5% CRIT DMG for 8s (stack up to 6, refreshes).'
+    }
+  },
+  DAWNS_BLOOM: {
+    id: 'dawns_bloom',
+    name: "Dawn's Bloom",
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'Basic Attack DMG +15%',
+      4: 'Basic Attack DMG +20%. If used by an Attack-type character, using EX Special or Ultimate gives another +20% Basic Attack DMG for 25s.'
+    }
+  },
+  FANGED_METAL: {
+    id: 'fanged_metal',
+    name: 'Fanged Metal',
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'Physical DMG +10%',
+      4: 'When a squad member inflicts Assault, equipper deals +35% damage to that target for 12s.'
     }
   },
   FREEDOM_BLUES: {
@@ -101,25 +64,142 @@ export const DISC_SETS = {
     slots: [1, 2, 3, 4, 5, 6],
     bonuses: {
       2: 'Anomaly Proficiency +30',
-      4: 'When launching a Chain Attack or Ultimate, all squad members Anomaly Proficiency increases by 30 for 12s.'
+      4: 'When an EX Special Attack hits, reduce target’s Anomaly Buildup RES (to your attribute) by 20% for 8s. (Does not stack with same-attribute sets)'
     }
   },
-  
-  // 2-piece support sets
-  SOUL_ROCK: {
-    id: 'soul_rock',
-    name: 'Soul Rock',
-    slots: [5, 6],
+  HORMONE_PUNK: {
+    id: 'hormone_punk',
+    name: 'Hormone Punk',
+    slots: [1, 2, 3, 4, 5, 6],
     bonuses: {
-      2: 'DEF +16%'
+      2: 'ATK +10%',
+      4: 'Upon entering combat or switching in, ATK +25% for 10s. (Cooldown: 20s)'
+    }
+  },
+  INFERNO_METAL: {
+    id: 'inferno_metal',
+    name: 'Inferno Metal',
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'Fire DMG +10%',
+      4: 'Upon hitting a Burning enemy, CRIT Rate +28% for 8s.'
+    }
+  },
+  KING_OF_THE_SUMMIT: {
+    id: 'king_of_the_summit',
+    name: 'King of the Summit',
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'Daze +6%',
+      4: 'If the user is a Stun character and uses EX Special or Chain Attack, all squad CRIT DMG +15%. If user’s CRIT Rate ≥ 50%, +15% more CRIT DMG for 15s.'
+    }
+  },
+  MOONLIGHT_LULLABY: {
+    id: 'moonlight_lullaby',
+    name: 'Moonlight Lullaby',
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'Energy Regen +20%',
+      4: 'If the user is Support and uses EX Special or Ultimate, all squad DMG +18% for 25s.'
+    }
+  },
+  PHAETHONS_MELODY: {
+    id: 'phaethons_melody',
+    name: "Phaethon's Melody",
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'Anomaly Mastery +8%',
+      4: 'When any squad member uses EX Special, the equipper’s Anomaly Proficiency +45 for 8s. If that user is not the equipper, Ether DMG +25%.'
+    }
+  },
+  POLAR_METAL: {
+    id: 'polar_metal',
+    name: 'Polar Metal',
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'Ice DMG +10%',
+      4: 'Basic Attack & Dash Attack DMG +20%. When any squad member inflicts Freeze or Shatter, +20% more for 12s.'
     }
   },
   PROTO_PUNK: {
     id: 'proto_punk',
     name: 'Proto Punk',
-    slots: [5, 6],
+    slots: [1, 2, 3, 4, 5, 6],
     bonuses: {
-      2: 'Pierce +16 | When HP is above 80%, ATK increases by 12%'
+      2: 'Increases Shield effect by 15%.',
+      4: 'When any squad member triggers a Defensive Assist or Evasive Assist, all squad members deal 15% increased DMG, lasting 10s. Passive effects of the same name do not stack.'
+    }
+  },
+  PUFFER_ELECTRO: {
+    id: 'puffer_electro',
+    name: 'Puffer Electro',
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'PEN Ratio +8%',
+      4: 'Ultimate DMG +20%. Launching an Ultimate also increases ATK +15% for 12s.'
+    }
+  },
+  SHADOW_HARMONY: {
+    id: 'shadow_harmony',
+    name: 'Shadow Harmony',
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'Aftershock & Dash Attack DMG +15%',
+      4: 'Upon hitting with Aftershock or Dash Attack (matching your attribute), gain a stack (max 3) that gives ATK +4% and CRIT Rate +4% for 15s.'
+    }
+  },
+  SHOCKSTAR_DISCO: {
+    id: 'shockstar_disco',
+    name: 'Shockstar Disco',
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'Impact +6%',
+      4: 'Basic Attack, Dash Attack, and Dodge Counter inflict 20% more Daze on main target.'
+    }
+  },
+  SOUL_ROCK: {
+    id: 'soul_rock',
+    name: 'Soul Rock',
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'DEF +16%',
+      4: 'When you lose HP from being hit, take 40% less damage for 2.5s (once per 15s cooldown).'
+    }
+  },
+  SWING_JAZZ: {
+    id: 'swing_jazz',
+    name: 'Swing Jazz',
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'Energy Regen +20%',
+      4: 'Launching a Chain Attack or Ultimate increases all squad members’ DMG by 15% for 12s.'
+    }
+  },
+  THUNDER_METAL: {
+    id: 'thunder_metal',
+    name: 'Thunder Metal',
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'Electric DMG +10%',
+      4: 'While an enemy is Shocked, ATK +28%.'
+    }
+  },
+  WOODPECKER_ELECTRO: {
+    id: 'woodpecker_electro',
+    name: 'Woodpecker Electro',
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'CRIT Rate +8%',
+      4: 'Critical hit with Basic / Dodge Counter / EX Special increases ATK by 9% for 6s.'
+    }
+  },
+  YUNKUI_TALES: {
+    id: 'yunkui_tales',
+    name: 'Yunkui Tales',
+    slots: [1, 2, 3, 4, 5, 6],
+    bonuses: {
+      2: 'HP +10%',
+      4: 'Using EX Special, Chain Attack or Ultimate gives CRIT Rate +4% (stack up to 3) for 15s; at 3 stacks, Sheer DMG +10%.'
     }
   }
 };
@@ -259,7 +339,7 @@ export function get4PieceSets() {
 
 // Helper function to get all 2-piece sets
 export function get2PieceSets() {
-  return Object.values(DISC_SETS).filter(set => !set.bonuses[4]);
+  return Object.values(DISC_SETS).filter(set => set.bonuses[4]);
 }
 
 // Helper function to get disc set by ID
