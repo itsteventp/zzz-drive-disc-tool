@@ -53,6 +53,7 @@ Click the "📤 Import" button and select a previously exported JSON file.
 If import goes wrong, open browser console and run:
 ```javascript
 __debug.restoreBackup() // Development mode only
+```
 
 Performance Tips
 Score Caching: Disc scores are cached automatically for faster loading
@@ -89,12 +90,15 @@ Then open http://localhost:8000
 Debug Tools (Development Mode)
 Open browser console when running on localhost:
 
+```
 javascript
 __debug.help()                  // Show all commands
 __debug.getScoreCacheStats()    // View cache performance
 __debug.clearScoreCache()       // Clear score cache
 __debug.enablePerfMonitor()     // Enable performance logging
 __debug.getStorageInfo()        // View storage statistics
+```
+
 Privacy
 All data is stored locally in your browser's localStorage. Nothing is sent to any server.
 
