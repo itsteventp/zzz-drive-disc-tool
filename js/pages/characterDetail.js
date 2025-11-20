@@ -294,8 +294,10 @@ function createEquipmentPanel(character, allDiscs) {
     </div>
   `;
   
-  // Attach event listeners
-  setTimeout(() => attachEquipmentListeners(character, allDiscs), 0);
+  // Attach event listeners inmmediately after DOM is added
+  requestAnimationFrame(() => {
+  attachEquipmentListeners(character, allDiscs);
+  });
   
   return panel;
 }
@@ -435,14 +437,26 @@ function renderDiscSlot(character, slotIndex, allDiscs) {
           <button 
             class="btn-change-disc btn-secondary btn-small" 
             data-slot="${slotIndex}"
-            style="flex: 1;"
+            style="
+              flex: 1;
+              cursor: pointer;
+              pointer-events: auto;
+              position: relative;
+              z-index: 10;
+            "
           >
             Change
           </button>
           <button 
             class="btn-unequip-disc btn-danger btn-small" 
             data-slot="${slotIndex}"
-            style="flex: 1;"
+            style="
+              flex: 1;
+              cursor: pointer;
+              pointer-events: auto;
+              position: relative;
+              z-index: 10;
+            "
           >
             Unequip
           </button>
@@ -563,31 +577,52 @@ function createBuildAnalysisPanel(character, allDiscs, buildScore, activeBonuses
 
 function attachEquipmentListeners(character, allDiscs) {
   // Equip disc buttons (empty slots)
-  document.querySelectorAll('.btn-equip-disc').forEach(btn => {
+  const equipButtons = document.querySelectorAll('.btn-equip-disc');
+  console.log('Found equip buttons:', equipButtons.length);
+  
+  equipButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
+      e.preventDefault();
       e.stopPropagation();
       const slotIndex = parseInt(btn.dataset.slot);
+      console.log('Equip clicked for slot:', slotIndex);
       openDiscSelectionModal(character, slotIndex, allDiscs);
     });
   });
   
   // Change disc buttons (equipped slots)
-  document.querySelectorAll('.btn-change-disc').forEach(btn => {
+  const changeButtons = document.querySelectorAll('.btn-change-disc');
+  console.log('Found change buttons:', changeButtons.length);
+  
+  changeButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
+      e.preventDefault();
       e.stopPropagation();
       const slotIndex = parseInt(btn.dataset.slot);
+      console.log('Change clicked for slot:', slotIndex);
       openDiscSelectionModal(character, slotIndex, allDiscs);
     });
   });
   
   // Unequip disc buttons
-  document.querySelectorAll('.btn-unequip-disc').forEach(btn => {
+  const unequipButtons = document.querySelectorAll('.btn-unequip-disc');
+  console.log('Found unequip buttons:', unequipButtons.length);
+  
+  unequipButtons.forEach(btn => {
+    // Ensure button is actually clickable
+    btn.style.pointerEvents = 'auto';
+    btn.style.cursor = 'pointer';
+    
     btn.addEventListener('click', async (e) => {
+      e.preventDefault();
       e.stopPropagation();
       const slotIndex = parseInt(btn.dataset.slot);
+      console.log('Unequip clicked for slot:', slotIndex);
       await handleUnequipDisc(character, slotIndex);
     });
   });
+  
+  console.log('All event listeners attached');
 }
 
 // ================================
