@@ -10,101 +10,115 @@
 
 :root {
     /* ================================
-       COLOR PALETTE - Enhanced ZZZ Theme
+       COLOR PALETTE - Refined ZZZ Theme
+       Muted, sophisticated colors inspired by the actual game
        ================================ */
     
-    /* Background Colors */
-    --color-bg-primary: #0a0a14;
-    --color-bg-secondary: #13131f;
-    --color-bg-tertiary: #1d1d2e;
-    --color-bg-elevated: #252538;
+    /* Background Colors - Deeper, more neutral */
+    --color-bg-primary: #0e0e16;
+    --color-bg-secondary: #16161f;
+    --color-bg-tertiary: #1e1e2a;
+    --color-bg-elevated: #26263a;
     
-    /* Accent Colors */
-    --color-accent-cyan: #00d9ff;
-    --color-accent-cyan-bright: #33e3ff;
-    --color-accent-cyan-dim: #0099cc;
-    --color-accent-purple: #9d4edd;
-    --color-accent-purple-bright: #b968ff;
-    --color-accent-purple-dim: #7b2cbf;
-    --color-accent-pink: #ff006e;
-    --color-accent-pink-bright: #ff3d8f;
-    --color-accent-pink-dim: #cc0058;
+    /* Accent Colors - MUTED (40-50% saturation instead of 100%) */
+    --color-accent-cyan: #4a9fb5;          /* Was: #00d9ff - Now muted teal */
+    --color-accent-cyan-bright: #5fb3c9;   /* Subtle highlight */
+    --color-accent-cyan-dim: #3a8294;      /* Subtle shadow */
     
-    /* Text Colors */
-    --color-text-primary: #ffffff;
-    --color-text-secondary: #c5c5dc;
-    --color-text-muted: #8a8a9f;
-    --color-text-disabled: #5a5a6c;
+    --color-accent-purple: #8b7ba8;        /* Was: #9d4edd - Now soft lavender */
+    --color-accent-purple-bright: #a394bd; /* Subtle highlight */
+    --color-accent-purple-dim: #6d5f87;    /* Subtle shadow */
     
-    /* Semantic Colors */
-    --color-border: #3a3a54;
-    --color-border-light: #4a4a62;
-    --color-success: #06ffa5;
-    --color-success-dim: #05cc84;
-    --color-warning: #ffb627;
-    --color-warning-dim: #cc911f;
-    --color-error: #ff006e;
-    --color-error-dim: #cc0058;
-    --color-info: #00d9ff;
+    --color-accent-gold: #d4af37;          /* New: Sophisticated gold for highlights */
+    --color-accent-amber: #e89b3c;         /* New: Warm accent */
     
-    /* Grade Colors */
-    --color-grade-s: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-    --color-grade-s-solid: #ffd700;
-    --color-grade-a: linear-gradient(135deg, #9d4edd 0%, #c77dff 100%);
-    --color-grade-a-solid: #9d4edd;
-    --color-grade-b: linear-gradient(135deg, #00d9ff 0%, #4de8ff 100%);
-    --color-grade-b-solid: #00d9ff;
-    --color-grade-c: linear-gradient(135deg, #7b7b8f 0%, #9d9daf 100%);
-    --color-grade-c-solid: #7b7b8f;
-    --color-grade-d: linear-gradient(135deg, #ff006e 0%, #ff3d8f 100%);
-    --color-grade-d-solid: #ff006e;
+    /* Text Colors - Slightly warmer */
+    --color-text-primary: #e8e8f0;         /* Softer white */
+    --color-text-secondary: #b0b0c8;       /* Muted lavender-gray */
+    --color-text-muted: #7a7a92;           /* Neutral gray */
+    --color-text-disabled: #4a4a5c;        /* Very muted */
+    
+    /* Semantic Colors - MUCH less saturated */
+    --color-border: #2e2e42;               /* Neutral border */
+    --color-border-light: #3a3a52;         /* Slightly lighter */
+    
+    --color-success: #5fb88d;              /* Was: #06ffa5 - Now muted jade */
+    --color-success-dim: #4a9370;
+    
+    --color-warning: #d4a959;              /* Was: #ffb627 - Now muted amber */
+    --color-warning-dim: #b08942;
+    
+    --color-error: #d15c6f;                /* Was: #ff006e - Now muted rose */
+    --color-error-dim: #a94958;
+    
+    --color-info: #5fa6bd;                 /* Muted info blue */
+    
+    /* Grade Colors - REFINED (solid colors, subtle gradients optional) */
+    --color-grade-s: #d4af37;              /* Gold (not neon yellow) */
+    --color-grade-s-bg: rgba(212, 175, 55, 0.15);
+    
+    --color-grade-a: #8b7ba8;              /* Soft purple */
+    --color-grade-a-bg: rgba(139, 123, 168, 0.15);
+    
+    --color-grade-b: #4a9fb5;              /* Muted teal */
+    --color-grade-b-bg: rgba(74, 159, 181, 0.15);
+    
+    --color-grade-c: #7a7a92;              /* Neutral gray */
+    --color-grade-c-bg: rgba(122, 122, 146, 0.15);
+    
+    --color-grade-d: #9d6b78;              /* Muted mauve */
+    --color-grade-d-bg: rgba(157, 107, 120, 0.15);
+    
+    /* Optional: Subtle gradients (use sparingly) */
+    --gradient-primary: linear-gradient(135deg, #4a9fb5 0%, #8b7ba8 100%);
+    --gradient-gold: linear-gradient(135deg, #d4af37 0%, #e8c547 100%);
+    --gradient-surface: linear-gradient(135deg, #16161f 0%, #1e1e2a 100%);
     
     /* ================================
-       SPACING SCALE
+       SPACING SCALE (unchanged)
        ================================ */
-    --space-xs: 0.25rem;   /* 4px */
-    --space-sm: 0.5rem;    /* 8px */
-    --space-md: 1rem;      /* 16px */
-    --space-lg: 1.5rem;    /* 24px */
-    --space-xl: 2rem;      /* 32px */
-    --space-2xl: 3rem;     /* 48px */
-    --space-3xl: 4rem;     /* 64px */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --space-3xl: 4rem;
     
     /* ================================
-       TYPOGRAPHY
+       TYPOGRAPHY (unchanged)
        ================================ */
     --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     --font-heading: 'Orbitron', var(--font-body);
     --font-mono: 'Fira Code', 'Courier New', monospace;
     
-    /* Font Sizes */
-    --text-xs: 0.75rem;    /* 12px */
-    --text-sm: 0.875rem;   /* 14px */
-    --text-base: 1rem;     /* 16px */
-    --text-lg: 1.125rem;   /* 18px */
-    --text-xl: 1.25rem;    /* 20px */
-    --text-2xl: 1.5rem;    /* 24px */
-    --text-3xl: 1.875rem;  /* 30px */
-    --text-4xl: 2.25rem;   /* 36px */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
     
     /* ================================
-       SHADOWS & ELEVATION
+       SHADOWS & ELEVATION - SOFTER
        ================================ */
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5);
-    --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.6);
-    --shadow-2xl: 0 24px 48px rgba(0, 0, 0, 0.7);
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.35);
+    --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.4);
+    --shadow-2xl: 0 24px 48px rgba(0, 0, 0, 0.5);
     
-    /* Glow Effects */
-    --glow-cyan: 0 0 20px rgba(0, 217, 255, 0.5);
-    --glow-purple: 0 0 20px rgba(157, 78, 221, 0.5);
-    --glow-pink: 0 0 20px rgba(255, 0, 110, 0.5);
-    --glow-success: 0 0 20px rgba(6, 255, 165, 0.5);
+    /* Glow Effects - MUCH SUBTLER */
+    --glow-cyan: 0 0 12px rgba(74, 159, 181, 0.3);      /* Was 0.5 */
+    --glow-purple: 0 0 12px rgba(139, 123, 168, 0.3);
+    --glow-gold: 0 0 16px rgba(212, 175, 55, 0.4);
+    --glow-success: 0 0 12px rgba(95, 184, 141, 0.3);
     
     /* ================================
-       BORDER RADIUS
+       BORDER RADIUS (unchanged)
        ================================ */
     --radius-xs: 2px;
     --radius-sm: 4px;
@@ -115,14 +129,14 @@
     --radius-full: 9999px;
     
     /* ================================
-       TRANSITIONS
+       TRANSITIONS (unchanged)
        ================================ */
     --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
     
     /* ================================
-       Z-INDEX SCALE
+       Z-INDEX SCALE (unchanged)
        ================================ */
     --z-base: 0;
     --z-dropdown: 1000;
@@ -176,18 +190,14 @@ body {
 }
 
 /* ================================
-   NAVIGATION
+   NAVIGATION - Cleaner, more subtle
    ================================ */
 
 #main-nav {
-    background: rgba(19, 19, 31, 0.95);
+    background: rgba(22, 22, 31, 0.92);
     backdrop-filter: blur(12px);
-    border-bottom: 2px solid transparent;
-    border-image: linear-gradient(90deg, 
-        var(--color-accent-cyan) 0%, 
-        var(--color-accent-purple) 50%, 
-        var(--color-accent-pink) 100%) 1;
-    box-shadow: var(--shadow-lg);
+    border-bottom: 1px solid var(--color-border-light);
+    box-shadow: var(--shadow-md);
     position: sticky;
     top: 0;
     z-index: var(--z-sticky);
@@ -205,86 +215,51 @@ body {
 .nav-logo {
     font-size: var(--text-2xl);
     font-weight: 700;
-    background: linear-gradient(135deg, var(--color-accent-cyan) 0%, var(--color-accent-purple) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: var(--glow-cyan);
+    color: var(--color-text-primary);
     position: relative;
     cursor: pointer;
     transition: all var(--transition-normal);
+    letter-spacing: 0.5px;
+}
+
+.nav-logo span {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .nav-logo:hover {
-    transform: scale(1.05);
-    filter: brightness(1.2);
-}
-
-.nav-logo::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--color-accent-cyan), var(--color-accent-purple));
-    opacity: 0;
-    transition: opacity var(--transition-normal);
-}
-
-.nav-logo:hover::after {
-    opacity: 1;
+    transform: translateY(-1px);
+    color: var(--color-accent-cyan);
 }
 
 .nav-links {
     display: flex;
-    gap: var(--space-md);
+    gap: var(--space-sm);
     list-style: none;
 }
 
 .nav-link {
     color: var(--color-text-secondary);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 500;
     padding: var(--space-sm) var(--space-lg);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     transition: all var(--transition-fast);
     position: relative;
-    overflow: hidden;
 }
 
-.nav-link::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, var(--color-accent-cyan), transparent);
-    transition: left var(--transition-slow);
-}
 .nav-link:hover {
-    color: var(--color-accent-cyan);
-    background: rgba(0, 217, 255, 0.1);
-    transform: translateY(-2px);
+    color: var(--color-text-primary);
+    background: var(--color-bg-tertiary);
 }
 
 .nav-link.active {
     color: var(--color-accent-cyan);
-    background: rgba(0, 217, 255, 0.15);
-    box-shadow: 0 0 0 1px var(--color-accent-cyan);
-}
-
-.nav-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 2px;
-    background: var(--color-accent-cyan);
-    box-shadow: var(--glow-cyan);
+    background: var(--color-bg-tertiary);
+    border-bottom: 2px solid var(--color-accent-cyan);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 
 /* ================================
@@ -306,12 +281,8 @@ body {
 }
 
 /* ================================
-   MODAL & TOAST CONTAINERS
+   TOAST CONTAINER
    ================================ */
-
-#modal-root {
-    /* Will be styled when we build modals */
-}
 
 #toast-container {
     position: fixed;

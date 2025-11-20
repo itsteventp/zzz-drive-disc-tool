@@ -15,26 +15,10 @@
     top: calc(80px + var(--space-lg));
 }
 
-/* Disc Slots */
+/* Disc Slots - Cleaner styling */
 .disc-slot {
     transition: all var(--transition-normal);
     position: relative;
-}
-
-.disc-slot::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: var(--radius-lg);
-    background: linear-gradient(135deg, 
-        rgba(0, 217, 255, 0.1) 0%, 
-        rgba(157, 78, 221, 0.1) 100%);
-    opacity: 0;
-    transition: opacity var(--transition-normal);
-}
-
-.disc-slot:hover::before {
-    opacity: 1;
 }
 
 .disc-slot.empty {
@@ -44,20 +28,18 @@
 
 .disc-slot.empty:hover {
     border-color: var(--color-accent-cyan);
-    background: rgba(0, 217, 255, 0.05);
+    background: rgba(74, 159, 181, 0.08);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md), var(--glow-cyan);
+    box-shadow: var(--shadow-md);
 }
 
 .disc-slot.equipped {
-    background: linear-gradient(135deg, 
-        var(--color-bg-tertiary) 0%, 
-        var(--color-bg-elevated) 100%);
+    background: var(--color-bg-tertiary);
 }
 
 .disc-slot.equipped:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-xl);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
 }
 
 .disc-selection-item {
@@ -66,22 +48,22 @@
 }
 
 .disc-selection-item:hover {
-    transform: translateX(8px);
-    box-shadow: var(--shadow-lg);
-    border-left-width: 6px;
+    transform: translateX(6px);
+    box-shadow: var(--shadow-md);
+    border-left-width: 5px;
 }
 
-/* Build Grade Display */
+/* Build Grade Display - Subtle pulse */
 .build-grade-display {
-    animation: pulseGlow 2s ease-in-out infinite;
+    animation: subtlePulse 3s ease-in-out infinite;
 }
 
-@keyframes pulseGlow {
+@keyframes subtlePulse {
     0%, 100% {
-        box-shadow: 0 0 20px currentColor;
+        opacity: 1;
     }
     50% {
-        box-shadow: 0 0 40px currentColor;
+        opacity: 0.9;
     }
 }
 
@@ -119,24 +101,22 @@
 .disc-card:nth-child(6) { animation-delay: 0.18s; }
 
 .disc-card:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: var(--shadow-xl);
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: var(--shadow-lg);
 }
 
-/* Comparison Panel */
+/* Comparison Panel - Cleaner */
 #comparison-panel {
-    animation: slideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    background: linear-gradient(135deg, 
-        var(--color-bg-secondary) 0%, 
-        var(--color-bg-tertiary) 100%);
-    border: 2px solid var(--color-accent-purple);
-    box-shadow: var(--shadow-xl), var(--glow-purple);
+    animation: slideDown 0.3s ease;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-accent-purple);
+    box-shadow: var(--shadow-xl);
 }
 
 @keyframes slideDown {
     from {
         opacity: 0;
-        transform: translateY(-50px);
+        transform: translateY(-30px);
     }
     to {
         opacity: 1;
@@ -146,17 +126,15 @@
 
 .comparison-disc-card {
     position: relative;
-    animation: scaleIn 0.3s ease;
+    animation: fadeIn 0.3s ease;
 }
 
-@keyframes scaleIn {
+@keyframes fadeIn {
     from {
         opacity: 0;
-        transform: scale(0.8);
     }
     to {
         opacity: 1;
-        transform: scale(1);
     }
 }
 
@@ -165,13 +143,13 @@
    ================================ */
 
 .form-step-content {
-    animation: slideInRight 0.3s ease;
+    animation: fadeInRight 0.25s ease;
 }
 
-@keyframes slideInRight {
+@keyframes fadeInRight {
     from {
         opacity: 0;
-        transform: translateX(30px);
+        transform: translateX(20px);
     }
     to {
         opacity: 1;
@@ -179,104 +157,95 @@
     }
 }
 
-/* Progress Bar */
+/* Progress Bar - Cleaner */
 .progress-step {
     transition: all var(--transition-normal);
 }
 
 .progress-step.active {
     background: var(--color-accent-cyan);
-    box-shadow: var(--glow-cyan);
 }
 
-/* Slot Selection Buttons */
+/* Slot Selection Buttons - Subtle interactions */
 .slot-select-btn,
 .mainstat-select-btn {
     transition: all var(--transition-fast);
     position: relative;
-    overflow: hidden;
-}
-
-.slot-select-btn::before,
-.mainstat-select-btn::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(0, 217, 255, 0.3);
-    transform: translate(-50%, -50%);
-    transition: width 0.4s, height 0.4s;
-}
-
-.slot-select-btn:hover::before,
-.mainstat-select-btn:hover::before {
-    width: 200px;
-    height: 200px;
 }
 
 .slot-select-btn:hover,
 .mainstat-select-btn:hover {
     border-color: var(--color-accent-cyan);
-    transform: scale(1.05);
-    box-shadow: var(--shadow-md), var(--glow-cyan);
+    transform: scale(1.03);
+    box-shadow: var(--shadow-sm);
 }
 
-/* Roll Slider */
+/* Roll Slider - Much cleaner */
 input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
     cursor: pointer;
-    height: 8px;
+    height: 6px;
     border-radius: var(--radius-full);
-    background: linear-gradient(90deg, 
-        var(--color-bg-elevated) 0%, 
-        var(--color-accent-cyan) 100%);
+    background: var(--color-bg-elevated);
 }
 
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 24px;
-    height: 24px;
-    background: linear-gradient(135deg, 
-        var(--color-accent-cyan) 0%, 
-        var(--color-accent-cyan-bright) 100%);
+    width: 20px;
+    height: 20px;
+    background: var(--color-accent-cyan);
     border-radius: 50%;
     cursor: pointer;
     transition: all var(--transition-fast);
-    box-shadow: var(--shadow-md), var(--glow-cyan);
+    box-shadow: var(--shadow-sm);
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-    background: linear-gradient(135deg, 
-        var(--color-accent-purple) 0%, 
-        var(--color-accent-purple-bright) 100%);
-    transform: scale(1.3);
-    box-shadow: var(--shadow-lg), var(--glow-purple);
+    background: var(--color-accent-cyan-bright);
+    transform: scale(1.15);
+    box-shadow: var(--shadow-md);
 }
 
 input[type="range"]::-moz-range-thumb {
-    width: 24px;
-    height: 24px;
-    background: linear-gradient(135deg, 
-        var(--color-accent-cyan) 0%, 
-        var(--color-accent-cyan-bright) 100%);
+    width: 20px;
+    height: 20px;
+    background: var(--color-accent-cyan);
     border-radius: 50%;
     cursor: pointer;
     border: none;
     transition: all var(--transition-fast);
-    box-shadow: var(--shadow-md), var(--glow-cyan);
+    box-shadow: var(--shadow-sm);
 }
 
 input[type="range"]::-moz-range-thumb:hover {
-    background: linear-gradient(135deg, 
-        var(--color-accent-purple) 0%, 
-        var(--color-accent-purple-bright) 100%);
-    transform: scale(1.3);
-    box-shadow: var(--shadow-lg), var(--glow-purple);
+    background: var(--color-accent-cyan-bright);
+    transform: scale(1.15);
+    box-shadow: var(--shadow-md);
+}
+
+/* Track coloring when sliding */
+input[type="range"]::-webkit-slider-runnable-track {
+    background: linear-gradient(90deg, 
+        var(--color-accent-cyan) 0%, 
+        var(--color-accent-cyan) var(--slider-progress, 50%), 
+        var(--color-bg-elevated) var(--slider-progress, 50%), 
+        var(--color-bg-elevated) 100%);
+    height: 6px;
+    border-radius: var(--radius-full);
+}
+
+input[type="range"]::-moz-range-track {
+    background: var(--color-bg-elevated);
+    height: 6px;
+    border-radius: var(--radius-full);
+}
+
+input[type="range"]::-moz-range-progress {
+    background: var(--color-accent-cyan);
+    height: 6px;
+    border-radius: var(--radius-full);
 }
 
 /* ================================
@@ -288,51 +257,6 @@ input[type="range"]::-moz-range-thumb:hover {
         grid-template-columns: 280px 1fr 280px;
     }
 }
-
-@media (max-width: 1024px) {
-    .character-detail-layout {
-        grid-template-columns: 1fr;
-    }
-    
-    .character-info-panel,
-    .build-analysis-panel {
-        position: static;
-    }
-    
-    #comparison-panel {
-        position: static !important;
-    }
-}
-
-@media (max-width: 768px) {
-    #disc-slots-grid {
-        grid-template-columns: 1fr !important;
-    }
-    
-    .disc-slot {
-        min-height: 200px;
-    }
-    
-    .disc-card {
-        min-height: auto;
-    }
-    
-    #comparison-panel > div:last-child {
-        grid-template-columns: 1fr !important;
-    }
-}
-
-@media (max-width: 640px) {
-    .slot-select-btn,
-    .mainstat-select-btn {
-        padding: var(--space-md) !important;
-        font-size: var(--text-sm) !important;
-    }
-}
-
-/* ================================
-   MOBILE RESPONSIVE LAYOUTS
-   ================================ */
 
 @media (max-width: 1024px) {
     /* Character Detail - Stack Layout */
@@ -421,7 +345,7 @@ input[type="range"]::-moz-range-thumb:hover {
     }
     
     .disc-selection-item:hover {
-        transform: none !important;
+        transform: translateX(3px) !important;
     }
     
     /* Multi-Step Form - Mobile Friendly */
@@ -482,5 +406,41 @@ input[type="range"]::-moz-range-thumb:hover {
     
     .modal-body {
         max-height: 50vh;
+    }
+}
+
+/* ================================
+   FADE IN ANIMATIONS
+   ================================ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================
+   REDUCED MOTION SUPPORT
+   ================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    .character-card,
+    .disc-card,
+    .comparison-disc-card,
+    .form-step-content,
+    #comparison-panel {
+        animation: none !important;
+    }
+    
+    .disc-slot:hover,
+    .disc-card:hover,
+    .slot-select-btn:hover,
+    .mainstat-select-btn:hover {
+        transform: none !important;
     }
 }
