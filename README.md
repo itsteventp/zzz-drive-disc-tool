@@ -1,5 +1,3 @@
----
-
 # 🌐 ZZZ Drive Disc Tool
 
 A clean and powerful web application for managing **Zenless Zone Zero** character builds and disc inventories—all stored locally in your browser.
@@ -196,5 +194,3 @@ Game mechanics and data © **HoYoverse**.
 ## 📜 License
 
 **MIT License** – Fork it, build on it, improve it!
-
----
