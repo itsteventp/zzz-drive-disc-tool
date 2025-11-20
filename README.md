@@ -1,96 +1,106 @@
-🌐 ZZZ Drive Disc Tool
+---
 
-A clean and powerful web application for managing Zenless Zone Zero character builds and disc inventories—all stored locally in your browser.
+# 🌐 ZZZ Drive Disc Tool
 
-✨ Features
+A clean and powerful web application for managing **Zenless Zone Zero** character builds and disc inventories—all stored locally in your browser.
 
-📊 Character Management
-Track characters with preferred disc sets and stat priorities
+---
 
-💿 Disc Inventory
-Maintain a sortable, filterable list of discs
+## ✨ Features
 
-⚖️ Disc Comparison
-Compare up to 4 discs side-by-side
+* 📊 **Character Management**
+  Track characters with preferred disc sets and stat priorities
 
-📈 Smart Scoring
-Discs are automatically rated based on each character’s preferences
+* 💿 **Disc Inventory**
+  Maintain a sortable, filterable list of discs
 
-🎯 Equipment System
-Equip discs to characters and see set bonuses in real time
+* ⚖️ **Disc Comparison**
+  Compare up to **4 discs side-by-side**
 
-💾 Data Portability
-Export or import your entire collection as JSON
+* 📈 **Smart Scoring**
+  Discs are automatically rated based on each character’s preferences
 
-🚀 Quick Start
-1️⃣ Add a Character
+* 🎯 **Equipment System**
+  Equip discs to characters and see set bonuses in real time
 
-Go to Characters → + Add Character
+* 💾 **Data Portability**
+  Export or import your entire collection as JSON
 
-Enter name, preferred sets, and stat priorities
-Note: Stats in priority positions 1–2 receive higher weight.
+---
 
-2️⃣ Add Discs
+## 🚀 Quick Start
 
-Go to Discs → + Add Disc
+### 1️⃣ Add a Character
 
-Select:
+* Go to **Characters** → **`+ Add Character`**
+* Enter name, preferred sets, and stat priorities
+  *Note: Stats in priority positions 1–2 receive higher weight.*
 
-Set
+### 2️⃣ Add Discs
 
-Slot
+* Go to **Discs** → **`+ Add Disc`**
+* Select:
 
-Main stat
+  * Set
+  * Slot
+  * Main stat
+  * Sub-stats
 
-Sub-stats
+### 3️⃣ Equip Discs
 
-3️⃣ Equip Discs
+* Open a character page
+* Select a slot → **Equip Disc**
+* Discs will be automatically scored and ranked
 
-Open a character page
+### 4️⃣ Compare Discs
 
-Select a slot → Equip Disc
+* On the Discs page, click **Compare**
+* Compare up to **four discs simultaneously**
+* Comparison panel stays visible while browsing
 
-Discs will be automatically scored and ranked
+---
 
-4️⃣ Compare Discs
+## ⌨️ Keyboard Shortcuts
 
-On the Discs page, click Compare
+| Key               | Action                 |
+| ----------------- | ---------------------- |
+| `Tab`             | Move focus             |
+| `Enter` / `Space` | Select focused element |
+| `Esc`             | Close modals           |
+| Arrow Keys        | Navigate dropdowns     |
 
-Compare up to four discs simultaneously
+---
 
-Comparison panel stays visible while browsing
+## 📂 Data Management
 
-⌨️ Keyboard Shortcuts
-Key	Action
-Tab	Move focus
-Enter / Space	Select focused element
-Esc	Close modals
-Arrow Keys	Navigate dropdowns
-📂 Data Management
-📥 Export Data
+### 📥 Export Data
 
-Click Export to download your entire database as JSON.
+Click **Export** to download your entire database as `JSON`.
 
-📤 Import Data
+### 📤 Import Data
 
-Click Import and select a previously exported file.
-⚠️ Import replaces current data. A backup is created automatically.
+Click **Import** and select a previously exported file.
+⚠️ **Import replaces current data. A backup is created automatically.**
 
-♻️ Restore Backup
+### ♻️ Restore Backup
 
 If something goes wrong during import, open the browser console and run:
 
+```javascript
 __debug.restoreBackup() // Development mode only
+```
 
-⚙️ Performance Tips
+---
 
-Score caching improves loading speed automatically
+## ⚙️ Performance Tips
 
-Use filters to quickly narrow down large inventories
+* **Score caching** improves loading speed automatically
+* **Use filters** to quickly narrow down large inventories
+* **Sort results** to surface the most relevant discs first
 
-Sort results to surface the most relevant discs first
+---
 
-🌍 Browser Support
+## 🌍 Browser Support
 
 ✔ Chrome 90+
 ✔ Firefox 88+
@@ -98,79 +108,93 @@ Sort results to surface the most relevant discs first
 ✔ Edge 90+
 ✔ Mobile browsers (Chrome Mobile, iOS Safari)
 
-🧠 How Scoring Works
+---
+
+## 🧠 How Scoring Works
 
 Discs earn points based on how well they match character preferences.
 
-🧮 Scoring
+### 🧮 Scoring
 
-High-priority stats (positions 1–2):
-1.0 × roll count
+* **High-priority stats (positions 1–2):**
+  `1.0 × roll count`
+* **Low-priority stats (positions 3–4):**
+  `0.5 × roll count`
+* **Main Stat Bonus:**
+  `+2 points` if it matches a priority stat
 
-Low-priority stats (positions 3–4):
-0.5 × roll count
+### 📊 Grade Thresholds
 
-Main Stat Bonus:
-+2 points if it matches a priority stat
+| Grade | Score      |
+| ----- | ---------- |
+| **S** | 7.0+       |
+| **A** | 5.0 – 6.99 |
+| **B** | 3.0 – 4.99 |
+| **C** | 1.5 – 2.99 |
+| **D** | < 1.5      |
 
-📊 Grade Thresholds
-Grade	Score
-S	7.0+
-A	5.0 – 6.99
-B	3.0 – 4.99
-C	1.5 – 2.99
-D	< 1.5
-🧪 Local Development
+---
 
-This is a static site—no build step required.
+## 🧪 Local Development
 
+This is a **static site—no build step required**.
+
+```bash
 # Serve locally
 python -m http.server 8000
 
 # or
 npx serve
-
+```
 
 Then open:
 
+```
 http://localhost:8000
+```
 
-🔧 Debug Tools (Localhost Only)
+---
+
+## 🔧 Debug Tools (Localhost Only)
 
 Open the browser console and use:
 
+```javascript
 __debug.help()                  // Show all debug commands
 __debug.getScoreCacheStats()    // Score cache analytics
 __debug.clearScoreCache()       // Reset cache
 __debug.enablePerfMonitor()     // Performance logging
 __debug.getStorageInfo()        // Storage usage overview
+```
 
-🔒 Privacy & Storage
+---
 
-All data is stored locally in localStorage
+## 🔒 Privacy & Storage
 
-No data is sent to any server
-
-Max storage: ~5–10MB (browser limit)
+* All data is stored **locally in `localStorage`**
+* No data is sent to any server
+* Max storage: ~5–10MB (browser limit)
 
 Planned future improvements:
 
-Cloud sync
+* Cloud sync
+* Collaboration features
 
-Collaboration features
+---
 
-🏗️ Tech Stack
+## 🏗️ Tech Stack
 
-Vanilla JavaScript
+* Vanilla JavaScript
+* CSS (Grid & Flexbox)
+* HTML
+* Browser LocalStorage
 
-CSS (Grid & Flexbox)
+Game mechanics and data © **HoYoverse**.
 
-HTML
+---
 
-Browser LocalStorage
+## 📜 License
 
-Game mechanics and data © HoYoverse.
+**MIT License** – Fork it, build on it, improve it!
 
-📜 License
-
-MIT License – Fork it, build on it, improve it!
+---
