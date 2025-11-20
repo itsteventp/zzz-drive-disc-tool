@@ -8,6 +8,20 @@
     box-sizing: border-box;
 }
 
+/* ================================
+   CUSTOM FONTS - Zenless Zone Zero
+   ================================ */
+
+@font-face {
+    font-family: 'ZZZ-Basic';
+    src: url('../ft/ZZZ-Basic.woff2') format('woff2'),
+         url('../ft/ZZZ-Basic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
 :root {
     /* ================================
        COLOR PALETTE - Refined ZZZ Theme
@@ -88,8 +102,8 @@
     /* ================================
        TYPOGRAPHY (unchanged)
        ================================ */
-    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    --font-heading: 'Orbitron', var(--font-body);
+    --font-body: 'ZZZ-Basic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-heading: 'ZZZ-Basic', sans-serif;
     --font-mono: 'Fira Code', 'Courier New', monospace;
     
     --text-xs: 0.75rem;
