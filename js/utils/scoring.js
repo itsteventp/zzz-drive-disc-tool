@@ -3,6 +3,8 @@
 // ================================
 
 import { SCORING_WEIGHTS, SCORE_GRADES } from '../config/constants.js';
+import { scoreCache } from './scoreCache.js';
+import { perfMonitor } from './performanceMonitor.js';
 
 // ================================
 // CORE SCORING ALGORITHM
@@ -19,6 +21,15 @@ export function calculateDiscScore(disc, character) {
     return 0;
   }
   
+  // Check cache first
+  const cached = scoreCache.get(character.id, disc.id);
+  if (cached !== null) {
+    return cached;
+  }
+  
+  // Measure performance in dev mode
+  perfMonitor.start(`score-${disc.id}`);
+  
   let score = 0;
   const priority = character.subStatPriority;
   
@@ -27,12 +38,10 @@ export function calculateDiscScore(disc, character) {
     const priorityIndex = priority.indexOf(statName);
     
     if (priorityIndex !== -1) {
-      // Stat is in priority list
-      const isHighPriority = priorityIndex <= 1; // Positions 0-1 are high priority
+      const isHighPriority = priorityIndex <= 1;
       const weight = isHighPriority ? SCORING_WEIGHTS.HIGH_PRIORITY : SCORING_WEIGHTS.LOW_PRIORITY;
       score += rollCount * weight;
     }
-    // If stat is not in priority list, it contributes 0
   });
   
   // Bonus if main stat matches any priority sub-stat
@@ -42,6 +51,11 @@ export function calculateDiscScore(disc, character) {
     const weight = isHighPriority ? SCORING_WEIGHTS.HIGH_PRIORITY : SCORING_WEIGHTS.LOW_PRIORITY;
     score += SCORING_WEIGHTS.MAIN_STAT_BONUS * weight;
   }
+  
+  perfMonitor.end(`score-${disc.id}`);
+  
+  // Store in cache
+  scoreCache.set(character.id, disc.id, score);
   
   return score;
 }
@@ -240,4 +254,16 @@ export function getScoreBreakdown(disc, character) {
   }
   
   return breakdown;
+}
+
+export function invalidateScoresForCharacter(characterId) {
+  scoreCache.invalidateCharacter(characterId);
+}
+
+export function invalidateScoresForDisc(discId) {
+  scoreCache.invalidateDisc(discId);
+}
+
+export function clearScoreCache() {
+  scoreCache.clear();
 }

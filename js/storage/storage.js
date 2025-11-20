@@ -2,6 +2,8 @@
 // STORAGE.JS - LocalStorage Wrapper
 // ================================
 
+import { scoreCache } from '../utils/scoreCache.js';
+
 const STORAGE_KEYS = {
   CHARACTERS: 'zzz_characters',
   DISCS: 'zzz_discs',
@@ -60,6 +62,10 @@ export function saveCharacter(character) {
   }
   
   localStorage.setItem(STORAGE_KEYS.CHARACTERS, JSON.stringify(characters));
+  
+  // Invalidate cache for this character
+  scoreCache.invalidateCharacter(character.id);
+  
   console.log('💾 Character saved:', character.name);
   return character;
 }
@@ -69,6 +75,10 @@ export function deleteCharacter(id) {
   const filtered = characters.filter(char => char.id !== id);
   
   localStorage.setItem(STORAGE_KEYS.CHARACTERS, JSON.stringify(filtered));
+  
+  // Invalidate cache
+  scoreCache.invalidateCharacter(id);
+  
   console.log('🗑️ Character deleted:', id);
   
   // Also unequip all discs that were equipped by this character
@@ -124,6 +134,10 @@ export function saveDisc(disc) {
   }
   
   localStorage.setItem(STORAGE_KEYS.DISCS, JSON.stringify(discs));
+  
+  // Invalidate cache for this disc
+  scoreCache.invalidateDisc(disc.id);
+  
   console.log('💾 Disc saved:', disc.id);
   return disc;
 }
@@ -131,11 +145,13 @@ export function saveDisc(disc) {
 export function deleteDisc(id) {
   const disc = getDiscById(id);
   
+  // Invalidate cache
+  scoreCache.invalidateDisc(id);
+  
   // If disc is equipped, remove it from character
   if (disc && disc.equippedBy) {
     const character = getCharacterById(disc.equippedBy);
     if (character) {
-      // Find which slot had this disc
       const slotIndex = character.equippedDiscs.findIndex(discId => discId === id);
       if (slotIndex >= 0) {
         character.equippedDiscs[slotIndex] = null;
@@ -205,16 +221,51 @@ export function importData(jsonString) {
       throw new Error('Invalid data format: characters and discs must be arrays');
     }
     
+    // Validate each character has required fields
+    const invalidChars = data.characters.filter(char => 
+      !char.id || !char.name || !char.subStatPriority || !Array.isArray(char.equippedDiscs)
+    );
+    
+    if (invalidChars.length > 0) {
+      throw new Error(`${invalidChars.length} character(s) have invalid structure`);
+    }
+    
+    // Validate each disc has required fields
+    const invalidDiscs = data.discs.filter(disc =>
+      !disc.id || !disc.setId || !disc.slot || !disc.mainStat || !Array.isArray(disc.subStats)
+    );
+    
+    if (invalidDiscs.length > 0) {
+      throw new Error(`${invalidDiscs.length} disc(s) have invalid structure`);
+    }
+    
+    // Create backup before import
+    const backup = {
+      version: CURRENT_VERSION,
+      backupDate: new Date().toISOString(),
+      characters: getAllCharacters(),
+      discs: getAllDiscs()
+    };
+    localStorage.setItem('zzz_backup_pre_import', JSON.stringify(backup));
+    console.log('📦 Backup created before import');
+    
     // Save imported data
     saveAllCharacters(data.characters);
     saveAllDiscs(data.discs);
+    
+    // Clear score cache after import
+    import('./scoreCache.js').then(({ scoreCache }) => {
+      scoreCache.clear();
+      console.log('🧹 Score cache cleared after import');
+    });
     
     console.log('📥 Data imported:', data.characters.length, 'characters,', data.discs.length, 'discs');
     
     return {
       success: true,
       characterCount: data.characters.length,
-      discCount: data.discs.length
+      discCount: data.discs.length,
+      version: data.version || 'unknown'
     };
   } catch (error) {
     console.error('Import error:', error);
@@ -222,6 +273,25 @@ export function importData(jsonString) {
       success: false,
       error: error.message
     };
+  }
+}
+
+export function restoreFromBackup() {
+  try {
+    const backupData = localStorage.getItem('zzz_backup_pre_import');
+    if (!backupData) {
+      throw new Error('No backup found');
+    }
+    
+    const backup = JSON.parse(backupData);
+    saveAllCharacters(backup.characters);
+    saveAllDiscs(backup.discs);
+    
+    console.log('✅ Restored from backup');
+    return { success: true };
+  } catch (error) {
+    console.error('Restore error:', error);
+    return { success: false, error: error.message };
   }
 }
 

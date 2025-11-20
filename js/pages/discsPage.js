@@ -7,6 +7,9 @@ import { getDiscSetName, filterDiscs } from '../models/disc.js';
 import { calculateDiscScore, getGradeForScore } from '../utils/scoring.js';
 import { showToast, confirmDialog, createEmptyState } from '../utils/ui.js';
 import { DISC_SETS } from '../config/constants.js';
+import { debounce } from '../utils/debounce.js';
+import { sortItems, createSortDropdown } from '../utils/sorting.js';
+import { perfMonitor } from '../utils/performanceMonitor.js';
 
 // ================================
 // STATE
@@ -16,10 +19,11 @@ let filters = {
   search: '',
   setId: 'all',
   slot: 'all',
-  equippedStatus: 'all' // 'all', 'equipped', 'unequipped'
+  equippedStatus: 'all'
 };
 
-let comparisonDiscs = []; // Array of disc IDs for comparison
+let currentSort = 'slotAsc';
+let comparisonDiscs = [];
 const MAX_COMPARISON_DISCS = 4;
 
 // ================================
@@ -27,30 +31,29 @@ const MAX_COMPARISON_DISCS = 4;
 // ================================
 
 export function renderDiscsPage(container, params) {
+  perfMonitor.start('renderDiscsPage');
+  
   const allDiscs = getAllDiscs();
-  const filteredDiscs = applyFilters(allDiscs);
+  let filteredDiscs = applyFilters(allDiscs);
+  filteredDiscs = sortItems(filteredDiscs, currentSort, 'discs');
   
   container.innerHTML = '';
   
   const page = document.createElement('div');
   
-  // Header
   page.appendChild(createHeader(allDiscs.length, filteredDiscs.length));
+  page.appendChild(createFiltersPanel(allDiscs.length, filteredDiscs.length));
   
-  // Filters
-  page.appendChild(createFiltersPanel());
-  
-  // Comparison Panel (if active)
   if (comparisonDiscs.length > 0) {
     page.appendChild(createComparisonPanel());
   }
   
-  // Disc Grid
   page.appendChild(createDiscGrid(filteredDiscs));
   
   container.appendChild(page);
   
-  // Attach event listeners
+  perfMonitor.end('renderDiscsPage');
+  
   attachEventListeners();
 }
 
@@ -99,7 +102,7 @@ function createHeader(totalCount, filteredCount) {
 // FILTERS PANEL
 // ================================
 
-function createFiltersPanel() {
+function createFiltersPanel(totalCount, filteredCount) {
   const panel = document.createElement('div');
   panel.style.cssText = `
     background: var(--color-bg-secondary);
@@ -108,8 +111,10 @@ function createFiltersPanel() {
     margin-bottom: var(--space-xl);
   `;
   
+  const hasActiveFilters = filters.search || filters.setId !== 'all' || filters.slot !== 'all' || filters.equippedStatus !== 'all' || currentSort !== 'slotAsc';
+  
   panel.innerHTML = `
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-md); align-items: end;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-md); align-items: end; margin-bottom: var(--space-md);">
       
       <!-- Search -->
       <div class="form-group" style="margin: 0;">
@@ -118,7 +123,7 @@ function createFiltersPanel() {
           type="text" 
           id="disc-search" 
           class="form-input" 
-          placeholder="Search by set or stats..."
+          placeholder="Search..."
           value="${filters.search}"
           style="margin: 0;"
         >
@@ -154,19 +159,31 @@ function createFiltersPanel() {
       <div class="form-group" style="margin: 0;">
         <label class="form-label" style="font-size: 0.9rem;">Status</label>
         <select id="filter-equipped" class="form-select" style="margin: 0;">
-          <option value="all" ${filters.equippedStatus === 'all' ? 'selected' : ''}>All Discs</option>
+          <option value="all" ${filters.equippedStatus === 'all' ? 'selected' : ''}>All</option>
           <option value="equipped" ${filters.equippedStatus === 'equipped' ? 'selected' : ''}>Equipped</option>
           <option value="unequipped" ${filters.equippedStatus === 'unequipped' ? 'selected' : ''}>Unequipped</option>
         </select>
       </div>
       
+      <!-- Sort -->
+      <div class="form-group" style="margin: 0;">
+        <label class="form-label" style="font-size: 0.9rem;">Sort by</label>
+        ${createSortDropdown(currentSort, 'discs')}
+      </div>
+      
       <!-- Clear Filters Button -->
-      ${(filters.search || filters.setId !== 'all' || filters.slot !== 'all' || filters.equippedStatus !== 'all') ? `
+      ${hasActiveFilters ? `
         <button id="clear-filters-btn" class="btn-secondary">
-          Clear Filters
+          Clear All
         </button>
       ` : ''}
     </div>
+    
+    ${filteredCount !== totalCount ? `
+      <div style="color: var(--color-text-secondary); font-size: 0.9rem;">
+        Showing <strong style="color: var(--color-accent-cyan);">${filteredCount}</strong> of ${totalCount} disc${totalCount !== 1 ? 's' : ''}
+      </div>
+    ` : ''}
   `;
   
   return panel;
@@ -179,7 +196,6 @@ function createFiltersPanel() {
 function applyFilters(discs) {
   let filtered = [...discs];
   
-  // Search filter
   if (filters.search) {
     const query = filters.search.toLowerCase();
     filtered = filtered.filter(disc => {
@@ -193,17 +209,14 @@ function applyFilters(discs) {
     });
   }
   
-  // Set filter
   if (filters.setId !== 'all') {
     filtered = filtered.filter(disc => disc.setId === filters.setId);
   }
   
-  // Slot filter
   if (filters.slot !== 'all') {
     filtered = filtered.filter(disc => disc.slot === parseInt(filters.slot));
   }
   
-  // Equipped status filter
   if (filters.equippedStatus === 'equipped') {
     filtered = filtered.filter(disc => disc.equippedBy !== null);
   } else if (filters.equippedStatus === 'unequipped') {
@@ -257,7 +270,6 @@ function createDiscCard(disc) {
   const character = isEquipped ? getCharacterById(disc.equippedBy) : null;
   const isInComparison = comparisonDiscs.includes(disc.id);
   
-  // Calculate score if equipped
   let score = 0;
   let grade = null;
   if (character) {
@@ -422,7 +434,6 @@ function createDiscCard(disc) {
     </div>
   `;
   
-  // Hover effect
   card.addEventListener('mouseenter', () => {
     if (!isInComparison) {
       card.style.transform = 'translateY(-4px)';
@@ -627,12 +638,16 @@ function openDiscForm(disc = null) {
 // ================================
 
 function attachEventListeners() {
-  // Search input
+  // Search input with debouncing
   const searchInput = document.getElementById('disc-search');
   if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      filters.search = e.target.value;
+    const debouncedSearch = debounce((value) => {
+      filters.search = value;
       renderDiscsPage(document.getElementById('app'));
+    }, 300);
+    
+    searchInput.addEventListener('input', (e) => {
+      debouncedSearch(e.target.value);
     });
   }
   
@@ -663,6 +678,15 @@ function attachEventListeners() {
     });
   }
   
+  // Sort dropdown
+  const sortSelect = document.getElementById('sort-select');
+  if (sortSelect) {
+    sortSelect.addEventListener('change', (e) => {
+      currentSort = e.target.value;
+      renderDiscsPage(document.getElementById('app'));
+    });
+  }
+  
   // Clear filters button
   const clearFiltersBtn = document.getElementById('clear-filters-btn');
   if (clearFiltersBtn) {
@@ -673,6 +697,7 @@ function attachEventListeners() {
         slot: 'all',
         equippedStatus: 'all'
       };
+      currentSort = 'slotAsc';
       renderDiscsPage(document.getElementById('app'));
     });
   }

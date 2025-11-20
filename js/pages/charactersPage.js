@@ -2,13 +2,21 @@
 // CHARACTERS PAGE
 // ================================
 
-import { getAllCharacters, deleteCharacter, getStorageStats } from '../storage/storage.js';
+import { getAllCharacters, deleteCharacter, getStorageStats, exportData, importData } from '../storage/storage.js';
 import { showToast, confirmDialog, createEmptyState } from '../utils/ui.js';
 import { getEquippedDiscCount, getPreferredSetsDisplay } from '../models/character.js';
 import { navigate } from '../main.js';
+import { debounce } from '../utils/debounce.js';
+import { sortItems, createSortDropdown } from '../utils/sorting.js';
+import { perfMonitor } from '../utils/performanceMonitor.js';
+
+// ================================
+// STATE
+// ================================
 
 let searchQuery = '';
 let filterSet = 'all';
+let currentSort = 'nameAsc';
 
 // ================================
 // RENDER CHARACTER CARD
@@ -95,7 +103,6 @@ function renderCharacterCard(character) {
   
   // Click and keyboard navigation
   const navigateToDetail = (e) => {
-    // Don't navigate if clicking action buttons
     if (e.target.closest('.btn-edit-char') || e.target.closest('.btn-delete-char')) {
       return;
     }
@@ -104,7 +111,6 @@ function renderCharacterCard(character) {
   
   card.addEventListener('click', navigateToDetail);
   
-  // Keyboard support
   card.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -153,17 +159,64 @@ function renderCharacterGrid(characters) {
 function filterCharacters(characters) {
   let filtered = [...characters];
   
-  // Search by name
   if (searchQuery) {
     filtered = filtered.filter(char => 
       char.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }
   
-  // Filter by set (if needed in future)
-  // Currently we're keeping it simple
-  
   return filtered;
+}
+
+// ================================
+// SEARCH AND FILTERS UI
+// ================================
+
+function createSearchAndFilters(characters, filtered) {
+  const searchBar = document.createElement('div');
+  searchBar.style.cssText = `
+    background: var(--color-bg-secondary);
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-xl);
+  `;
+  
+  const hasActiveFilters = searchQuery || currentSort !== 'nameAsc';
+  
+  searchBar.innerHTML = `
+    <div style="display: grid; grid-template-columns: 1fr auto auto; gap: var(--space-md); align-items: end;">
+      <div class="form-group" style="margin: 0;">
+        <label class="form-label" style="font-size: 0.9rem;">Search</label>
+        <input 
+          type="text" 
+          id="search-input" 
+          class="form-input" 
+          placeholder="🔍 Search characters..."
+          value="${searchQuery}"
+          style="margin: 0;"
+        >
+      </div>
+      
+      <div class="form-group" style="margin: 0;">
+        <label class="form-label" style="font-size: 0.9rem;">Sort by</label>
+        ${createSortDropdown(currentSort, 'characters')}
+      </div>
+      
+      ${hasActiveFilters ? `
+        <button id="clear-filters-btn" class="btn-secondary" style="height: fit-content;">
+          Clear All
+        </button>
+      ` : ''}
+    </div>
+    
+    ${filtered.length !== characters.length ? `
+      <div style="margin-top: var(--space-md); color: var(--color-text-secondary); font-size: 0.9rem;">
+        Showing <strong style="color: var(--color-accent-cyan);">${filtered.length}</strong> of ${characters.length} character${characters.length !== 1 ? 's' : ''}
+      </div>
+    ` : ''}
+  `;
+  
+  return searchBar;
 }
 
 // ================================
@@ -171,12 +224,10 @@ function filterCharacters(characters) {
 // ================================
 
 function openCharacterForm(character = null) {
-  // Import and open the form
   import('../components/characterForm.js').then(module => {
     module.openCharacterForm(character);
   });
 }
-
 
 // ================================
 // DELETE CHARACTER
@@ -202,17 +253,72 @@ async function handleDeleteCharacter(characterId) {
 }
 
 // ================================
+// EXPORT/IMPORT HANDLERS
+// ================================
+
+function handleExportData() {
+  try {
+    exportData();
+    showToast('Data exported successfully!', 'success');
+  } catch (error) {
+    showToast('Export failed: ' + error.message, 'error');
+  }
+}
+
+function handleImportData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  const loadingToast = showToast('Importing data...', 'info', 0);
+  
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    try {
+      const jsonString = event.target.result;
+      const result = importData(jsonString);
+      
+      loadingToast.remove();
+      
+      if (result.success) {
+        showToast(
+          `Import successful! ${result.characterCount} characters, ${result.discCount} discs`,
+          'success',
+          4000
+        );
+        setTimeout(() => window.location.reload(), 1500);
+      } else {
+        showToast(`Import failed: ${result.error}`, 'error', 5000);
+      }
+    } catch (error) {
+      loadingToast.remove();
+      showToast(`Import failed: ${error.message}`, 'error', 5000);
+    }
+  };
+  
+  reader.onerror = () => {
+    loadingToast.remove();
+    showToast('Failed to read file', 'error');
+  };
+  
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+// ================================
 // MAIN RENDER FUNCTION
 // ================================
 
 export function renderCharactersPage(container, params) {
+  perfMonitor.start('renderCharactersPage');
+  
   const characters = getAllCharacters();
-  const filtered = filterCharacters(characters);
+  let filtered = filterCharacters(characters);
+  filtered = sortItems(filtered, currentSort, 'characters');
+  
   const stats = getStorageStats();
   
   container.innerHTML = '';
   
-  // Create page container
   const page = document.createElement('div');
   
   // Header
@@ -237,77 +343,76 @@ export function renderCharactersPage(container, params) {
       </p>
     </div>
     
-    <div style="display: flex; gap: var(--space-md); align-items: center;">
+    <div style="display: flex; gap: var(--space-md); align-items: center; flex-wrap: wrap;">
+      <button id="export-data-btn" class="btn-secondary" title="Export all data">
+        📥 Export
+      </button>
+      <label for="import-file-input" class="btn-secondary" style="cursor: pointer; margin: 0;" title="Import data from file">
+        📤 Import
+      </label>
+      <input type="file" id="import-file-input" accept=".json" style="display: none;">
       <button id="add-character-btn" class="btn-primary">
         + Add Character
       </button>
     </div>
   `;
   
-  // Search and filters
-  const searchBar = document.createElement('div');
-  searchBar.style.cssText = `
-    background: var(--color-bg-secondary);
-    padding: var(--space-lg);
-    border-radius: var(--radius-lg);
-    margin-bottom: var(--space-xl);
-  `;
-  
-  searchBar.innerHTML = `
-    <div style="display: flex; gap: var(--space-md); align-items: center; flex-wrap: wrap;">
-      <div style="flex: 1; min-width: 250px;">
-        <input 
-          type="text" 
-          id="search-input" 
-          class="form-input" 
-          placeholder="🔍 Search characters..."
-          value="${searchQuery}"
-          style="margin: 0;"
-        >
-      </div>
-      ${filtered.length !== characters.length ? `
-        <button id="clear-filters-btn" class="btn-secondary btn-small">
-          Clear Filters
-        </button>
-      ` : ''}
-    </div>
-  `;
-  
   page.appendChild(header);
-  page.appendChild(searchBar);
+  page.appendChild(createSearchAndFilters(characters, filtered));
   page.appendChild(renderCharacterGrid(filtered));
   
   container.appendChild(page);
+  
+  perfMonitor.end('renderCharactersPage');
   
   // ================================
   // EVENT LISTENERS
   // ================================
   
-  // Add character button
   const addBtn = document.getElementById('add-character-btn');
   if (addBtn) {
     addBtn.addEventListener('click', () => openCharacterForm());
   }
   
-  // Search input
   const searchInput = document.getElementById('search-input');
   if (searchInput) {
+    const debouncedSearch = debounce((value) => {
+      searchQuery = value;
+      renderCharactersPage(container);
+    }, 300);
+    
     searchInput.addEventListener('input', (e) => {
-      searchQuery = e.target.value;
+      debouncedSearch(e.target.value);
+    });
+  }
+  
+  const sortSelect = document.getElementById('sort-select');
+  if (sortSelect) {
+    sortSelect.addEventListener('change', (e) => {
+      currentSort = e.target.value;
       renderCharactersPage(container);
     });
   }
   
-  // Clear filters button
   const clearBtn = document.getElementById('clear-filters-btn');
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       searchQuery = '';
+      currentSort = 'nameAsc';
       renderCharactersPage(container);
     });
   }
   
-  // Edit character buttons
+  const exportBtn = document.getElementById('export-data-btn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', handleExportData);
+  }
+  
+  const importInput = document.getElementById('import-file-input');
+  if (importInput) {
+    importInput.addEventListener('change', handleImportData);
+  }
+  
   document.querySelectorAll('.btn-edit-char').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -317,7 +422,6 @@ export function renderCharactersPage(container, params) {
     });
   });
   
-  // Delete character buttons
   document.querySelectorAll('.btn-delete-char').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();

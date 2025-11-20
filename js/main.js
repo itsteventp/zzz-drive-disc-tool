@@ -145,3 +145,75 @@ if (document.readyState === 'loading') {
 } else {
   init();
 }
+
+// ================================
+// DEBUG HELPERS (Development Only)
+// ================================
+
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+  // Dynamic imports for debug utilities
+  Promise.all([
+    import('./utils/scoreCache.js'),
+    import('./utils/performanceMonitor.js')
+  ]).then(([scoreCacheModule, perfModule]) => {
+    const { scoreCache } = scoreCacheModule;
+    const { perfMonitor } = perfModule;
+    
+    // Expose debug utilities
+    window.__debug = {
+      getScoreCacheStats: () => {
+        const stats = scoreCache.getStats();
+        console.table(stats);
+        return stats;
+      },
+      
+      clearScoreCache: () => {
+        scoreCache.clear();
+        console.log('✅ Score cache cleared');
+      },
+      
+      enablePerfMonitor: () => {
+        perfMonitor.enable();
+        console.log('✅ Performance monitoring enabled');
+      },
+      
+      disablePerfMonitor: () => {
+        perfMonitor.disable();
+        console.log('✅ Performance monitoring disabled');
+      },
+      
+      getStorageInfo: () => {
+        const stats = getStorageStats();
+        console.table(stats);
+        return stats;
+      },
+      
+      restoreBackup: () => {
+        import('./storage/storage.js').then(({ restoreFromBackup }) => {
+          const result = restoreFromBackup();
+          if (result.success) {
+            console.log('✅ Backup restored successfully');
+            console.log('⚠️ Reload page to see changes');
+          } else {
+            console.error('❌ Restore failed:', result.error);
+          }
+        });
+      },
+      
+      help: () => {
+        console.log('%c🛠️ Debug Commands Available:', 'color: #00ff88; font-size: 14px; font-weight: bold;');
+        console.log('%c__debug.getScoreCacheStats()', 'color: #00aaff;', '- Show cache hit rate');
+        console.log('%c__debug.clearScoreCache()', 'color: #00aaff;', '- Clear score cache');
+        console.log('%c__debug.enablePerfMonitor()', 'color: #00aaff;', '- Enable performance monitoring');
+        console.log('%c__debug.disablePerfMonitor()', 'color: #00aaff;', '- Disable performance monitoring');
+        console.log('%c__debug.getStorageInfo()', 'color: #00aaff;', '- Show storage statistics');
+        console.log('%c__debug.restoreBackup()', 'color: #00aaff;', '- Restore from pre-import backup');
+      }
+    };
+    
+    console.log('%c🔍 Development Mode Active', 'color: #00ff88; font-size: 14px; font-weight: bold;');
+    console.log('%cType __debug.help() for available commands', 'color: #888; font-style: italic;');
+  }).catch(err => {
+    console.warn('Debug utilities not loaded:', err);
+  });
+}

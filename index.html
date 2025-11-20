@@ -12,6 +12,16 @@
     
     <!-- Favicon (optional, add later) -->
     <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
+
+    <!-- Performance monitoring toggle (development only) -->
+    <script>
+    // Enable performance monitoring in development
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        console.log('%c🔍 Development Mode', 'color: #00ff88; font-size: 16px; font-weight: bold;');
+        console.log('%cPerformance monitoring enabled', 'color: #00ff88;');
+        console.log('%cType __perfMonitor.disable() to turn off', 'color: #888;');
+    }
+    </script>
 </head>
 <body>
     <!-- Skip to Main Content (Accessibility) -->
