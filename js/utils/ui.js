@@ -421,3 +421,14 @@ export function createEmptyState({ icon = '📭', title, message, actionText, on
   
   return container;
 }
+
+// ================================
+// DISPLAY ROLL COUNT (GAME STYLE)
+// Shows roll count - 1 to match game UI
+// (1 roll = base stat, 2 rolls = +1, etc.)
+// ================================
+
+export function formatRollCount(rolls) {
+  const displayCount = rolls - 1;
+  return displayCount > 0 ? `+${displayCount}` : '';
+}

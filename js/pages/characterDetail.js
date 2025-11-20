@@ -409,12 +409,14 @@ function renderDiscSlot(character, slotIndex, allDiscs) {
         ">
           ${disc.subStats.map(([stat, rolls]) => {
             const isPriority = character.subStatPriority.includes(stat);
+            const displayRolls = rolls - 1; // Game displays upgrades, not total rolls
+            const rollText = displayRolls > 0 ? ` +${displayRolls}` : '';
             return `
               <div style="
                 color: ${isPriority ? 'var(--color-accent-cyan)' : 'var(--color-text-muted)'};
                 font-size: 0.85rem;
               ">
-                ${stat} +${rolls}
+                ${stat}${rollText}
               </div>
             `;
           }).join('')}
@@ -747,12 +749,14 @@ function openDiscSelectionModal(character, slotIndex, allDiscs) {
             ">
               ${disc.subStats.map(([stat, rolls]) => {
                 const isPriority = character.subStatPriority.includes(stat);
+                const displayRolls = rolls - 1;
+                const rollText = displayRolls > 0 ? ` +${displayRolls}` : '';
                 return `
                   <div style="
                     color: ${isPriority ? 'var(--color-accent-cyan)' : 'var(--color-text-muted)'};
                     font-size: 0.9rem;
                   ">
-                    ${stat} +${rolls}
+                    ${stat}${rollText}
                   </div>
                 `;
               }).join('')}

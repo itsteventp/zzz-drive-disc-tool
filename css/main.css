@@ -585,3 +585,20 @@ textarea:focus-visible {
 [aria-live="assertive"] {
     position: relative;
 }
+
+/* ================================
+   FONT WEIGHT OVERRIDE
+   ZZZ fonts look better at normal weight
+   ================================ */
+
+* {
+    font-weight: 400 !important;
+}
+
+h1, h2, h3, h4, h5, h6,
+.card-title,
+.nav-logo,
+.form-label,
+.badge {
+    font-weight: 500 !important;
+}

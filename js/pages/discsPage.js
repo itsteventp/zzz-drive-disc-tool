@@ -380,7 +380,10 @@ function createDiscCard(disc) {
         grid-template-columns: repeat(2, 1fr);
         gap: var(--space-xs);
       " class="substat-grid">
-        ${disc.subStats.map(([stat, rolls]) => `
+        ${disc.subStats.map(([stat, rolls]) => {
+            const displayRolls = rolls - 1;
+            const rollText = displayRolls > 0 ? ` +${displayRolls}` : '';
+            return `
           <div style="
             background: var(--color-bg-tertiary);
             padding: var(--space-sm);
@@ -388,9 +391,9 @@ function createDiscCard(disc) {
             color: var(--color-text-primary);
             font-size: 0.9rem;
           ">
-            ${stat} <span style="color: var(--color-accent-cyan); font-weight: 700;">+${rolls}</span>
+            ${stat} <span style="color: var(--color-accent-cyan); font-weight: 700;">+${rollText}</span>
           </div>
-        `).join('')}
+        `}).join('')}
       </div>
     </div>
     
